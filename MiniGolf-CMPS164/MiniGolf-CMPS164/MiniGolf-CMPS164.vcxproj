@@ -79,20 +79,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\CMPS164\Lab-2\src\catcher.cpp" />
-    <ClCompile Include="..\..\..\..\CMPS164\Lab-2\src\golfCourse.cpp" />
-    <ClCompile Include="..\..\..\..\CMPS164\Lab-2\src\main.cpp" />
-    <ClCompile Include="..\..\..\..\CMPS164\Lab-2\src\reader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\CMPS164\Lab-2\src\catcher.h" />
-    <ClInclude Include="..\..\..\..\CMPS164\Lab-2\src\golfCourse.h" />
-    <ClInclude Include="..\..\..\..\CMPS164\Lab-2\src\reader.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Inputs\hole.00.db" />
     <None Include="Inputs\hole.01.db" />
     <None Include="Inputs\hole.02.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="catcher.cpp" />
+    <ClCompile Include="golfCourse.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="reader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="catcher.h" />
+    <ClInclude Include="golfCourse.h" />
+    <ClInclude Include="reader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
