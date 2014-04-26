@@ -135,7 +135,7 @@ void draw_Course(golfCourse* course) {
 				glPushMatrix();
 				glBegin(GL_POLYGON);
 				glColor3f(1.0f, 0.0f, 0.0f); //Red
-				glNormal3f(0.0f, 1.0f, 0.0f);
+				glNormal3f(1.0f, 1.0f, 1.0f);
 				glVertex3f(v1[0], v1[1], v1[2]);
 				glVertex3f(v2[0], v2[1], v2[2]);
 				glVertex3f(v2[0], v2[1] + 0.1, v2[2]);

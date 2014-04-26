@@ -1,9 +1,40 @@
-﻿Build started 4/26/2014 11:31:00 AM.
+﻿Build started 4/26/2014 11:49:08 AM.
      1>Project "C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\KHENTAI\Documents\Visual Studio 2013\Projects\MiniGolf-CMPS164\MiniGolf-CMPS164\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(75): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(102): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(104): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(105): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(106): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(115): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(139): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(140): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(141): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(142): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(154): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(161): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(205): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(208): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(211): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(214): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(217): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(220): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(224): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(225): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(226): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(236): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(237): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\cmps164\lab-2\minigolf-cmps164\minigolf-cmps164\main.cpp(238): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\KHENTAI\Documents\Visual Studio 2013\Projects\MiniGolf-CMPS164\MiniGolf-CMPS164\lib" glew32.lib glew32s.lib freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.lib" /MACHINE:X86 Debug\catcher.obj
+         Debug\golfCourse.obj
+         Debug\main.obj
+         Debug\reader.obj
          MiniGolf-CMPS164.vcxproj -> C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.exe
      1>Done Building Project "C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.04
+Time Elapsed 00:00:01.03
