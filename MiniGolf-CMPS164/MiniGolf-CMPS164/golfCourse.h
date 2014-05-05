@@ -15,6 +15,17 @@
 
 using namespace std;
 
+
+struct wall {
+	int wallNum;
+	float wallHeight;
+	array<double, 3> wall_v1;
+	array<double, 3> wall_v2;
+	array<double, 3> wall_v1h; //add in wallHeight to the y-component
+	array<double, 3> wall_v2h;
+	wall(array<double, 3> v1, array<double, 3> v2, float wHeight, int wNum);
+};
+
 // Holds tile information
 struct tile {
 	int lineNum;				// Line number this information was at
@@ -24,8 +35,9 @@ struct tile {
 	vector<int> neighbors;	// Corresponds to each pair in vertices
 	// IE: neighbor at element 0 corresponds to
 	//     vertices at element 0 and 1
-	vector< array<double, 3>> vectorNorms; //Normals
+	vector<wall> walls; 
 	tile(vector<string> data, int lNum);
+	
 };
 
 class golfCourse {

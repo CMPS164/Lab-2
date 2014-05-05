@@ -27,6 +27,53 @@ tile::tile(vector<string> data, int lNum): lineNum(lNum){
 			vertices.push_back(temp);
 		}
 	}
+
+	//create walls here
+	int wallNum = 0;
+	for (int index = 0; index < neighbors.size(); ++index) {
+		if (neighbors.at(index) == 0) { //There is no connecting tile and thus is an edge
+			wallNum++;
+			array<double, 3> v1;
+			v1[0] = v1[1] = v1[2] = 0.0;
+			array<double, 3> v2;
+			v2[0] = v2[1] = v2[2] = 0.0;
+
+			//Take the vertex indices and create a new vector for a wall.
+			if (index == neighbors.size() - 1) {
+				//This check is for the case if there is no edge between the last vertice and the first one in the vector, thus we need to 'loop' around
+				v1 = vertices.at(index);
+				v2 = vertices.at(0);
+			}
+			else {
+				v1 = vertices.at(index);
+				v2 = vertices.at(index + 1);
+			}
+			wall temp(v1, v2, 0.1, wallNum);	//wall height is set to 0.1
+			walls.push_back(temp);
+		}
+	}
+}
+
+
+//Wall Constructor
+wall::wall(array<double, 3> v1, array<double, 3> v2, float wHeight, int wNum){
+	wallNum = wNum;	//Unknown what to do with WallNum, here just in case
+	wallHeight = wHeight;
+
+	array<double, 3> v1_addH;
+	v1_addH[0] = v1[0];
+	v1_addH[1] = v1[1] + wallHeight;
+	v1_addH[2] = v1[2]; 
+	array<double, 3> v2_addH;
+	v2_addH[0] = v2[0];
+	v2_addH[1] = v2[1] + wallHeight;
+	v2_addH[2] = v2[2];
+	
+	//Four vertices for the Edge
+	wall_v1 = v1;
+	wall_v2 = v2;
+	wall_v1h = v1_addH;
+	wall_v2h = v2_addH;
 }
 
 // Constructor
@@ -123,11 +170,6 @@ void golfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 	}
 }
 
-void golfCourse::setNorms(vector<tile> &tiles) {
-	//Setting normals for each vector
-	//Take cross product
-
-}
 
 // Prints out the course in its entirety
 void golfCourse::printCourse() {

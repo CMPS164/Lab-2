@@ -34,6 +34,13 @@ struct cam_coord {
 //Global Golf_Course object
 golfCourse* course;
 cam_coord default{0, 3, 5, 0, 0, 0};
+cam_coord third_person_ball{ 0, 0, 0, 0, 0, 0 };
+cam_coord top_down{ 0, 3, 0, 0, 0, 0 };
+
+//global booleans to switch between the camera views
+bool default_cam = true;
+bool third_person_cam = false;
+bool top_down_cam = false;
 
 //Does some of the glut initializations
 void init() {
@@ -43,12 +50,13 @@ void init() {
 	GLfloat ambient_0[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_Position_0);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_0);
-	glLightfv(GL_LIGHT0, GL_POSITION, specular_0);
-	glLightfv(GL_LIGHT0, GL_POSITION, ambient_0);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular_0);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_0);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
 
 }
 
@@ -90,7 +98,7 @@ void draw_Course(golfCourse* course) {
 	vector<tile> tiles = course->getTiles();
 	for (auto tile : tiles) {
 		vector< array<double, 3> > vertices = tile.vertices;
-		vector<int> neighbors = tile.neighbors;
+		vector<wall> edges = tile.walls;
 
 		//Get Face Normal
 		array<double, 3> useNormal;
@@ -111,6 +119,9 @@ void draw_Course(golfCourse* course) {
 		glEnd();
 		glPopMatrix();
 
+		//Drawing is done through wall structs as discussed in lab.
+		//Feel free to remove this if the code works fine. Works okay with me
+		/*
 		//Checking and Drawing Edges
 		for (int index = 0; index < neighbors.size(); ++index) {
 			if (neighbors.at(index) == 0) { //There is no connecting tile and thus is an edge
@@ -144,6 +155,22 @@ void draw_Course(golfCourse* course) {
 				glPopMatrix();
 			}
 		}
+		*/
+
+		//Drawing the polygon
+		for (auto wall : edges) {
+			
+			glPushMatrix();
+			glBegin(GL_POLYGON);
+			glColor3f(1.0f, 0.0f, 0.0f); //Red
+			glNormal3f(1.0f, 1.0f, 1.0f); //Possibly need to change normal calculation for better lighting?
+			glVertex3f(wall.wall_v1[0], wall.wall_v1[1], wall.wall_v1[2]);
+			glVertex3f(wall.wall_v2[0], wall.wall_v2[1], wall.wall_v2[2]);
+			glVertex3f(wall.wall_v2h[0], wall.wall_v2h[1], wall.wall_v2h[2]);
+			glVertex3f(wall.wall_v1h[0], wall.wall_v1h[1], wall.wall_v1h[2]);
+			glEnd();
+			glPopMatrix();
+		}
 	}
 
 	//Drawing the tee
@@ -151,15 +178,24 @@ void draw_Course(golfCourse* course) {
 	array<double, 3> cupLoc = course->getCup();
 	glPushMatrix();
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glTranslatef(teeLoc[0], teeLoc[1], teeLoc[2]);
+	glTranslatef(teeLoc[0], teeLoc[1] + 0.025, teeLoc[2]);
 	glutSolidSphere(0.025, 360, 360);
 	glPopMatrix();
 
 	//Drawing the cup
 	glPushMatrix();
 	glColor3f(0.0f, 0.0f, 0.0f);
-	glTranslatef(cupLoc[0], cupLoc[1], cupLoc[2]);
-	glutSolidSphere(0.05, 360, 360);
+	glTranslatef(cupLoc[0], cupLoc[1] + 0.025, cupLoc[2]);
+
+	//This draws a cylinder as the cup. 
+	//*INCOMPLETE*
+	/*
+	GLUquadric* temp = gluNewQuadric();
+	gluQuadricNormals(temp, GL_SMOOTH);
+	glRotatef(90, 1, 0, 0);
+	gluCylinder(temp, 0.03, 0.03, 0.05, 360, 360); //I need to fix this.
+	*/
+	glutSolidSphere(0.025, 360, 360);
 	glPopMatrix();
 }
 
@@ -173,10 +209,29 @@ void GL_displayFunc() {
 	//Set up view matrices
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(90, windowWidth/windowHeight, 0.1, 100);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(default.xLoc, default.yLoc, default.zLoc, default.xEye, default.yEye, default.zEye, 0, 1, 0);
+	//gluPerspective(90, windowWidth/windowHeight, 0.1, 100);
+//	glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
+	
+	if (third_person_cam) {
+		gluPerspective(90, windowWidth / windowHeight, 0.1, 100);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(third_person_ball.xLoc, third_person_ball.yLoc, third_person_ball.zLoc, third_person_ball.xEye, third_person_ball.yEye, third_person_ball.zEye, 0, 1, 0);
+	}
+	else if (top_down_cam) {
+		gluPerspective(90, windowWidth / windowHeight, 0.1, 100);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(top_down.xLoc, top_down.yLoc, top_down.zLoc, top_down.xEye, top_down.yEye, top_down.zEye, 0, 0, 1);
+	}
+	else {
+		gluPerspective(90, windowWidth / windowHeight, 0.1, 100);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		gluLookAt(default.xLoc, default.yLoc, default.zLoc, default.xEye, default.yEye, default.zEye, 0, 1, 0);
+		
+	}
 
 	//Draws the Golf Course
 	draw_Course(course);
@@ -202,22 +257,34 @@ void GL_reshapeFunc(int width, int height) {
 void GL_keyboardFunc(unsigned char key, int x, int y) {
 	switch (key) {
 	case 'w':
-		default.yLoc += 0.1;
+		if (default_cam) {
+			default.yLoc += 0.1;
+		}
 		break;
 	case 's':
-		default.yLoc -= 0.1;
+		if (default_cam) {
+			default.yLoc -= 0.1;
+		}
 		break;
 	case 'a':
-		default.xLoc -= 0.1;
+		if (default_cam) {
+			default.xLoc -= 0.1;
+		}
 		break;
 	case 'd':
-		default.xLoc += 0.1;
+		if (default_cam) {
+			default.xLoc += 0.1;
+		}
 		break;
 	case 'q':
-		default.zLoc += 0.1;
+		if (default_cam) {
+			default.zLoc += 0.1;
+		}
 		break;
 	case 'e':
-		default.zLoc -= 0.1;
+		if (default_cam) {
+			default.zLoc -= 0.1;
+		}
 		break;
 	case 't':
 		//focus on the ball
@@ -243,6 +310,21 @@ void GL_keyboardFunc(unsigned char key, int x, int y) {
 		default.xLoc = 0;
 		default.yLoc = 3;
 		default.zLoc = 5;
+		break;
+	case '1':
+		default_cam = true;
+		third_person_cam = false;
+		top_down_cam = false;
+		break;
+	case '2':
+		default_cam = false;
+		third_person_cam = true;
+		top_down_cam = false;
+		break;
+	case '3':
+		default_cam = false;
+		third_person_cam = false;
+		top_down_cam = true;
 		break;
 	}
 }
@@ -275,6 +357,7 @@ int main(int argc, char** argv) {
 
 		//golfCourse course(file);
 		course = new golfCourse(file);
+		third_person_ball = {0, 2, 0, course->getTee()[0], course->getTee()[1], course->getTee()[2]};	//These parameters define gluLookAt for third person view. Need to work on this
 	} catch (string error) {
 		// Reports error and changes the exit value
 		cout << "Program exited because ";
