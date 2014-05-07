@@ -15,6 +15,18 @@
 
 using namespace std;
 
+class ball {
+public:
+	ball(float radius, array<double, 3> startLoc);
+	float getRadius();
+	array<double, 3> getBallLoc();
+private:
+	float ballRadius;
+	array<double, 3> ballLoc; //The Tee location from the course file
+
+	//How to keep track of ball position with Physics?
+	//Francis Tang figures this out
+};
 
 struct wall {
 	int wallNum;

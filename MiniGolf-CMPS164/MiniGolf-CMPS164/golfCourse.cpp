@@ -76,6 +76,18 @@ wall::wall(array<double, 3> v1, array<double, 3> v2, float wHeight, int wNum){
 	wall_v2h = v2_addH;
 }
 
+ball::ball(float radius, array<double,3> startLoc) {
+	ballRadius = radius;
+	ballLoc = startLoc;
+}
+float ball::getRadius() {
+	return ballRadius;
+}
+
+array<double, 3> ball::getBallLoc() {
+	return ballLoc;
+}
+
 // Constructor
 golfCourse::golfCourse(vector< vector<string> > newFile) {
 	file = newFile;

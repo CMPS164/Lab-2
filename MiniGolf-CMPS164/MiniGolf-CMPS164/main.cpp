@@ -33,7 +33,8 @@ struct cam_coord {
 
 //Global Golf_Course object
 golfCourse* course;
-cam_coord default{0, 3, 5, 0, 0, 0};
+ball* golfTee;
+cam_coord default{0, 3, 3, 0, 0, 0};
 cam_coord third_person_ball{ 0, 0, 0, 0, 0, 0 };
 cam_coord top_down{ 0, 3, 0, 0, 0, 0 };
 
@@ -96,12 +97,13 @@ void calc_Normal(array<double, 3> &result, array<double, 3> v1, array<double,3> 
 */
 void draw_Course(golfCourse* course) {
 	vector<tile> tiles = course->getTiles();
+	array<double, 3> useNormal;
 	for (auto tile : tiles) {
 		vector< array<double, 3> > vertices = tile.vertices;
 		vector<wall> edges = tile.walls;
 
 		//Get Face Normal
-		array<double, 3> useNormal;
+		
 		calc_Normal(useNormal, vertices.at(0), vertices.at(1), vertices.at(vertices.size() - 1));
 		
 		glPushMatrix();
@@ -119,51 +121,15 @@ void draw_Course(golfCourse* course) {
 		glEnd();
 		glPopMatrix();
 
-		//Drawing is done through wall structs as discussed in lab.
-		//Feel free to remove this if the code works fine. Works okay with me
-		/*
-		//Checking and Drawing Edges
-		for (int index = 0; index < neighbors.size(); ++index) {
-			if (neighbors.at(index) == 0) { //There is no connecting tile and thus is an edge
-				array<double, 3> v1;
-				v1[0] = v1[1] = v1[2] = 0.0;
-				array<double, 3> v2;
-				v2[0] = v2[1] = v2[2] = 0.0;
-
-				//Take the vertex indices and create a new vector for a wall.
-				if (index == neighbors.size() - 1) {
-					//This check is for the case if there is no edge between the last vertice and the first one in the vector, thus we need to 'loop' around
-					v1 = vertices.at(index);
-					v2 = vertices.at(0);
-				}
-				else {
-					v1 = vertices.at(index);
-					v2 = vertices.at(index + 1);
-				}
-
-				//After having both v1 and v2 defined...make a wall
-				//counter clockwise drawing
-				glPushMatrix();
-				glBegin(GL_POLYGON);
-				glColor3f(1.0f, 0.0f, 0.0f); //Red
-				glNormal3f(1.0f, 1.0f, 1.0f);
-				glVertex3f(v1[0], v1[1], v1[2]);
-				glVertex3f(v2[0], v2[1], v2[2]);
-				glVertex3f(v2[0], v2[1] + 0.1, v2[2]);
-				glVertex3f(v1[0], v1[1] + 0.1, v1[2]);
-				glEnd();
-				glPopMatrix();
-			}
-		}
-		*/
-
-		//Drawing the polygon
+		//Drawing the walls
 		for (auto wall : edges) {
 			
 			glPushMatrix();
 			glBegin(GL_POLYGON);
 			glColor3f(1.0f, 0.0f, 0.0f); //Red
-			glNormal3f(1.0f, 1.0f, 1.0f); //Possibly need to change normal calculation for better lighting?
+			//glNormal3f(1.0f, 1.0f, 1.0f); //Possibly need to change normal calculation for better lighting?
+			calc_Normal(useNormal, wall.wall_v1, wall.wall_v2, wall.wall_v1h);
+			glNormal3f(useNormal[0], useNormal[1], useNormal[2]);
 			glVertex3f(wall.wall_v1[0], wall.wall_v1[1], wall.wall_v1[2]);
 			glVertex3f(wall.wall_v2[0], wall.wall_v2[1], wall.wall_v2[2]);
 			glVertex3f(wall.wall_v2h[0], wall.wall_v2h[1], wall.wall_v2h[2]);
@@ -174,28 +140,28 @@ void draw_Course(golfCourse* course) {
 	}
 
 	//Drawing the tee
-	array<double, 3> teeLoc = course->getTee();
 	array<double, 3> cupLoc = course->getCup();
 	glPushMatrix();
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glTranslatef(teeLoc[0], teeLoc[1] + 0.025, teeLoc[2]);
-	glutSolidSphere(0.025, 360, 360);
+	glTranslatef(golfTee->getBallLoc()[0], golfTee->getBallLoc()[1] + golfTee->getRadius(), golfTee->getBallLoc()[2]);
+	glutSolidSphere(golfTee->getRadius(), 360, 360);
 	glPopMatrix();
 
 	//Drawing the cup
+	//This draws a cylinder as the cup. 	
 	glPushMatrix();
-	glColor3f(0.0f, 0.0f, 0.0f);
-	glTranslatef(cupLoc[0], cupLoc[1] + 0.025, cupLoc[2]);
-
-	//This draws a cylinder as the cup. 
-	//*INCOMPLETE*
-	/*
-	GLUquadric* temp = gluNewQuadric();
-	gluQuadricNormals(temp, GL_SMOOTH);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glTranslatef(cupLoc[0], cupLoc[1] + 0.001, cupLoc[2]);
+	GLUquadric* hole = gluNewQuadric();
+	gluQuadricNormals(hole, GL_SMOOTH);
 	glRotatef(90, 1, 0, 0);
-	gluCylinder(temp, 0.03, 0.03, 0.05, 360, 360); //I need to fix this.
-	*/
-	glutSolidSphere(0.025, 360, 360);
+	gluCylinder(hole, 0.03, 0.03, 0.05, 360, 1); //parameters are (gluQuatric, radius of base, radius of top, height, slices, subdivisions)
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glRotatef(180, 1, 0, 0);
+	gluDisk(hole, 0.0f, 0.03, 360, 1);
+	glRotatef(180, 1, 0, 0);
+	glTranslatef(0, 0, 0.05);
+	gluDisk(hole, 0.0f, 0.03, 360, 1);
 	glPopMatrix();
 }
 
@@ -309,7 +275,7 @@ void GL_keyboardFunc(unsigned char key, int x, int y) {
 		//focus on the ball
 		default.xLoc = 0;
 		default.yLoc = 3;
-		default.zLoc = 5;
+		default.zLoc = 3;
 		break;
 	case '1':
 		default_cam = true;
@@ -357,7 +323,8 @@ int main(int argc, char** argv) {
 
 		//golfCourse course(file);
 		course = new golfCourse(file);
-		third_person_ball = {0, 2, 0, course->getTee()[0], course->getTee()[1], course->getTee()[2]};	//These parameters define gluLookAt for third person view. Need to work on this
+		golfTee = new ball(0.025, course->getTee());
+		third_person_ball = {course->getTee()[0], course->getTee()[1] + 0.4, course->getTee()[2] + 0.3, course->getTee()[0], course->getTee()[1], course->getTee()[2] };	//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
 	} catch (string error) {
 		// Reports error and changes the exit value
 		cout << "Program exited because ";
