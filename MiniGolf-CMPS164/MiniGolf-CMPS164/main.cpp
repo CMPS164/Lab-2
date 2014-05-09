@@ -9,9 +9,9 @@
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 
-
-#include "reader.h"
-#include "catcher.h"
+#include "Util/reader.h"
+#include "Util/catcher.h"
+#include "Physics/rigidbody.h"
 #include "golfCourse.h"
 
 using namespace std;
@@ -32,8 +32,8 @@ struct cam_coord {
 };
 
 //Global Golf_Course object
-golfCourse* course;
-ball* golfTee;
+GolfCourse* course;
+Ball* golfTee;
 cam_coord default{0, 3, 3, 0, 0, 0};
 cam_coord third_person_ball{ 0, 0, 0, 0, 0, 0 };
 cam_coord top_down{ 0, 3, 0, 0, 0, 0 };
@@ -64,6 +64,7 @@ void init() {
 /*
 *	This calculates FACE NORMALS. One per tile
 */
+/*
 void calc_Normal(array<double, 3> &result, array<double, 3> v1, array<double,3> v2, array<double,3> v3) {
 	array<double, 3> vector_1;
 	vector_1[0] = v1[0] - v3[0];
@@ -89,31 +90,29 @@ void calc_Normal(array<double, 3> &result, array<double, 3> v1, array<double,3> 
 	result[1] = result[1] / magnitude;
 	result[2] = result[2] / magnitude;
 }
+*/
 
 /*
 *	This function draws the golf course through primitives.
 *	In the future, we need to change this as fixed functional pipeline
 *	is deprecated in current openGL standards
 */
-void draw_Course(golfCourse* course) {
-	vector<tile> tiles = course->getTiles();
-	array<double, 3> useNormal;
+void draw_Course(GolfCourse* course) {
+	vector<Tile> tiles = course->getTiles();
 	for (auto tile : tiles) {
-		vector< array<double, 3> > vertices = tile.vertices;
-		vector<wall> edges = tile.walls;
+		vector< Vertex > vertices = tile.vertices;
+		vector<Wall> edges = tile.walls;
 
 		//Get Face Normal
-		
-		calc_Normal(useNormal, vertices.at(0), vertices.at(1), vertices.at(vertices.size() - 1));
 		
 		glPushMatrix();
 		//Drawing the polygon, counter-clockwise
 		glBegin(GL_POLYGON);
-		glNormal3f(useNormal[0], useNormal[1], useNormal[2]);
+		glNormal3f(tile.getNormal().x, tile.getNormal().y, tile.getNormal().z);
 		for (auto vertex : vertices) {
-			float x_Coord = vertex[0];
-			float y_Coord = vertex[1];
-			float z_Coord = vertex[2];
+			float x_Coord = vertex.x;
+			float y_Coord = vertex.y;
+			float z_Coord = vertex.z;
 
 			glColor3f(0.0f, 1.0f, 0.0f); //Blue
 			glVertex3f(x_Coord, y_Coord, z_Coord);
@@ -128,30 +127,29 @@ void draw_Course(golfCourse* course) {
 			glBegin(GL_POLYGON);
 			glColor3f(1.0f, 0.0f, 0.0f); //Red
 			//glNormal3f(1.0f, 1.0f, 1.0f); //Possibly need to change normal calculation for better lighting?
-			calc_Normal(useNormal, wall.wall_v1, wall.wall_v2, wall.wall_v1h);
-			glNormal3f(useNormal[0], useNormal[1], useNormal[2]);
-			glVertex3f(wall.wall_v1[0], wall.wall_v1[1], wall.wall_v1[2]);
-			glVertex3f(wall.wall_v2[0], wall.wall_v2[1], wall.wall_v2[2]);
-			glVertex3f(wall.wall_v2h[0], wall.wall_v2h[1], wall.wall_v2h[2]);
-			glVertex3f(wall.wall_v1h[0], wall.wall_v1h[1], wall.wall_v1h[2]);
+			glNormal3f(wall.getNormal().x, wall.getNormal().y, wall.getNormal().z);
+			glVertex3f(wall.wallVert[0].x, wall.wallVert[0].y, wall.wallVert[0].z);
+			glVertex3f(wall.wallVert[1].x, wall.wallVert[1].y, wall.wallVert[1].z);
+			glVertex3f(wall.wallVert[2].x, wall.wallVert[2].y, wall.wallVert[2].z);
+			glVertex3f(wall.wallVert[3].x, wall.wallVert[3].y, wall.wallVert[3].z);
 			glEnd();
 			glPopMatrix();
 		}
 	}
 
 	//Drawing the tee
-	array<double, 3> cupLoc = course->getCup();
+	Position cupLoc = course->getCup();
 	glPushMatrix();
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glTranslatef(golfTee->getBallLoc()[0], golfTee->getBallLoc()[1] + golfTee->getRadius(), golfTee->getBallLoc()[2]);
-	glutSolidSphere(golfTee->getRadius(), 360, 360);
+	glTranslatef(golfTee->position.x, golfTee->position.y + golfTee->ballRadius, golfTee->position.z);
+	glutSolidSphere(golfTee->ballRadius, 360, 360);
 	glPopMatrix();
 
 	//Drawing the cup
 	//This draws a cylinder as the cup. 	
 	glPushMatrix();
 	glColor3f(0.0f, 1.0f, 0.0f);
-	glTranslatef(cupLoc[0], cupLoc[1] + 0.001, cupLoc[2]);
+	glTranslatef(cupLoc.x, cupLoc.y + 0.001, cupLoc.z);
 	GLUquadric* hole = gluNewQuadric();
 	gluQuadricNormals(hole, GL_SMOOTH);
 	glRotatef(90, 1, 0, 0);
@@ -201,6 +199,7 @@ void GL_displayFunc() {
 
 	//Draws the Golf Course
 	draw_Course(course);
+	golfTee->update();
 
 	glFlush();
 	glutSwapBuffers();
@@ -254,9 +253,9 @@ void GL_keyboardFunc(unsigned char key, int x, int y) {
 		break;
 	case 't':
 		//focus on the ball
-		default.xEye = course->getTee()[0];
-		default.yEye = course->getTee()[1];
-		default.zEye = course->getTee()[2];
+		default.xEye = course->getTee().x;
+		default.yEye = course->getTee().y;
+		default.zEye = course->getTee().z;
 		break;
 	case 'o':
 		//focus on the origin
@@ -266,9 +265,9 @@ void GL_keyboardFunc(unsigned char key, int x, int y) {
 		break;
 	case 'c' :
 		//focus on the ball
-		default.xEye = course->getCup()[0];
-		default.yEye = course->getCup()[1];
-		default.zEye = course->getCup()[2];
+		default.xEye = course->getCup().x;
+		default.yEye = course->getCup().y;
+		default.zEye = course->getCup().z;
 		break;
 	case 'r':
 		//Reset the Camera Position
@@ -305,7 +304,7 @@ int main(int argc, char** argv) {
 
 	vector< vector<string> > file;	// Our file, as a vector
 
-	catcher mitt;			// catcher object
+	Catcher mitt;			// catcher object
 
 	// Try block, used to catch problems in what we do
 	try {
@@ -322,9 +321,14 @@ int main(int argc, char** argv) {
 		file = fileReader.getWords();		// Gets a vector of a vector of each word
 
 		//golfCourse course(file);
-		course = new golfCourse(file);
-		golfTee = new ball(0.025, course->getTee());
-		third_person_ball = {course->getTee()[0], course->getTee()[1] + 0.4, course->getTee()[2] + 0.3, course->getTee()[0], course->getTee()[1], course->getTee()[2] };	//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
+		course = new GolfCourse(file);
+		golfTee = new Ball(0.025, Position(course->getTee().x, course->getTee().y, course->getTee().z));
+
+		golfTee->addForce(0, .25);
+
+		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
+		third_person_ball = {course->getTee().x, course->getTee().y + 0.4, course->getTee().z + 0.3,
+				course->getTee().x, course->getTee().y, course->getTee().z };
 	} catch (string error) {
 		// Reports error and changes the exit value
 		cout << "Program exited because ";
@@ -362,6 +366,7 @@ int main(int argc, char** argv) {
 
 	glClearColor(0,0,0,0);
 	glutMainLoop();
+	
 
 	return 0;
 }

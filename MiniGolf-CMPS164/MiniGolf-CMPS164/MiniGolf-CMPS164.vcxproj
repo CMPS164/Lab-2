@@ -52,13 +52,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lib\glew32.lib;lib\glew32s.lib;lib\freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,15 +84,27 @@
     <None Include="Inputs\hole.02.db" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="catcher.cpp" />
     <ClCompile Include="golfCourse.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="reader.cpp" />
+    <ClCompile Include="Physics\collider.cpp" />
+    <ClCompile Include="Physics\force.cpp" />
+    <ClCompile Include="Physics\movingCollider.cpp" />
+    <ClCompile Include="Physics\rigidbody.cpp" />
+    <ClCompile Include="Physics\position.cpp" />
+    <ClCompile Include="Physics\vector3.cpp" />
+    <ClCompile Include="Util\catcher.cpp" />
+    <ClCompile Include="Util\reader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="catcher.h" />
     <ClInclude Include="golfCourse.h" />
-    <ClInclude Include="reader.h" />
+    <ClInclude Include="Physics\collider.h" />
+    <ClInclude Include="Physics\force.h" />
+    <ClInclude Include="Physics\movingCollider.h" />
+    <ClInclude Include="Physics\rigidbody.h" />
+    <ClInclude Include="Physics\position.h" />
+    <ClInclude Include="Physics\vector3.h" />
+    <ClInclude Include="Util\catcher.h" />
+    <ClInclude Include="Util\reader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

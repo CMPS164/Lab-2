@@ -8,9 +8,29 @@
 
 #include "golfCourse.h"
 
+Ball::Ball() : RigidSphere() {
+	ballRadius = 1;
+}
+
+Ball::Ball(float radius) : RigidSphere(radius) {
+	ballRadius = radius;
+}
+
+Ball::Ball(float radius, Force f) : RigidSphere(radius, f) {
+	ballRadius = radius;
+}
+
+Ball::Ball(float radius, Position startLoc) : RigidSphere(radius, startLoc){
+	ballRadius = radius;
+}
+
+Ball::Ball(float radius, Position startLoc, Force f) : RigidSphere(radius, startLoc, f) {
+	ballRadius = radius;
+}
+
 // tile struct constructor
 // Deciphers line and stores everything
-tile::tile(vector<string> data, int lNum): lineNum(lNum){
+Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 	for (unsigned int x = 1; x < data.size(); ++x) {
 		if (x == 1) {
 			tileNum = atoi(data[x].c_str());
@@ -19,24 +39,30 @@ tile::tile(vector<string> data, int lNum): lineNum(lNum){
 		} else if (x >= data.size() - numOfEdges) {
 			neighbors.push_back(atoi(data[x].c_str()));
 		} else {
-			array<double, 3> temp;
-			temp[0] = atof(data[x].c_str());
-			temp[1] = atof(data[x+1].c_str());
-			temp[2] = atof(data[x+2].c_str());
+			Vertex temp;
+			temp.x = atof(data[x].c_str());
+			temp.y = atof(data[x+1].c_str());
+			temp.z = atof(data[x+2].c_str());
 			x += 2;
 			vertices.push_back(temp);
 		}
 	}
+	tVerts[0] = vertices[0];
+	tVerts[1] = vertices[1];
+	tVerts[2] = vertices[2];
+
+	if (vertices.size() < 4) tVerts[3] = Vertex();
+	else tVerts[3] = vertices[3];
+
+	Quad(tVerts);
 
 	//create walls here
 	int wallNum = 0;
 	for (int index = 0; index < neighbors.size(); ++index) {
 		if (neighbors.at(index) == 0) { //There is no connecting tile and thus is an edge
 			wallNum++;
-			array<double, 3> v1;
-			v1[0] = v1[1] = v1[2] = 0.0;
-			array<double, 3> v2;
-			v2[0] = v2[1] = v2[2] = 0.0;
+			Vertex v1;
+			Vertex v2;
 
 			//Take the vertex indices and create a new vector for a wall.
 			if (index == neighbors.size() - 1) {
@@ -48,7 +74,7 @@ tile::tile(vector<string> data, int lNum): lineNum(lNum){
 				v1 = vertices.at(index);
 				v2 = vertices.at(index + 1);
 			}
-			wall temp(v1, v2, 0.1, wallNum);	//wall height is set to 0.1
+			Wall temp(v1, v2, 0.1, wallNum);	//wall height is set to 0.1
 			walls.push_back(temp);
 		}
 	}
@@ -56,40 +82,21 @@ tile::tile(vector<string> data, int lNum): lineNum(lNum){
 
 
 //Wall Constructor
-wall::wall(array<double, 3> v1, array<double, 3> v2, float wHeight, int wNum){
+Wall::Wall(Vertex v1, Vertex v2, float wHeight, int wNum){
 	wallNum = wNum;	//Unknown what to do with WallNum, here just in case
 	wallHeight = wHeight;
-
-	array<double, 3> v1_addH;
-	v1_addH[0] = v1[0];
-	v1_addH[1] = v1[1] + wallHeight;
-	v1_addH[2] = v1[2]; 
-	array<double, 3> v2_addH;
-	v2_addH[0] = v2[0];
-	v2_addH[1] = v2[1] + wallHeight;
-	v2_addH[2] = v2[2];
 	
 	//Four vertices for the Edge
-	wall_v1 = v1;
-	wall_v2 = v2;
-	wall_v1h = v1_addH;
-	wall_v2h = v2_addH;
-}
+	wallVert[0] = Vertex(v1.x, v1.y, v1.z);
+	wallVert[1] = Vertex(v2.x, v2.y, v2.z);
+	wallVert[2] = Vertex(v2.x, v2.y + wallHeight, v2.z); 
+	wallVert[3] = Vertex(v1.x, v1.y + wallHeight, v1.z);
 
-ball::ball(float radius, array<double,3> startLoc) {
-	ballRadius = radius;
-	ballLoc = startLoc;
-}
-float ball::getRadius() {
-	return ballRadius;
-}
-
-array<double, 3> ball::getBallLoc() {
-	return ballLoc;
+	Quad(wallVert);
 }
 
 // Constructor
-golfCourse::golfCourse(vector< vector<string> > newFile) {
+GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	file = newFile;
 
 	// Used for checking later
@@ -103,20 +110,20 @@ golfCourse::golfCourse(vector< vector<string> > newFile) {
 }
 
 //Accessors for tiles Vector, Tee and Cup Locations
-vector<tile> golfCourse::getTiles() {
+vector<Tile> GolfCourse::getTiles() {
 	return tiles;
 }
 
-array<double, 3> golfCourse::getTee() {
+Position GolfCourse::getTee() {
 	return tee;
 }
 
-array<double, 3> golfCourse::getCup() {
+Position GolfCourse::getCup() {
 	return cup;
 }
 
 // Goes through file looking for tee and cup
-void golfCourse::decipherFile() {
+void GolfCourse::decipherFile() {
 	vector< vector<string> > pTiles;	// Stores that vectors that might be tiles
 	vector<int> lineNum;
 
@@ -132,17 +139,17 @@ void golfCourse::decipherFile() {
 						", current engine does not support more than 1.");
 				teeLine = x;
 				istringstream(file[x][1]) >> teeTile;
-				istringstream(file[x][2]) >> tee[0];
-				istringstream(file[x][3]) >> tee[1];
-				istringstream(file[x][4]) >> tee[2];
+				istringstream(file[x][2]) >> tee.x;
+				istringstream(file[x][3]) >> tee.y;
+				istringstream(file[x][4]) >> tee.z;
 			} else if (file[x][0].compare("cup") == 0) {
 				if (cupTile != -1) throw string("another 'cup' data found at line " + to_string(x) +
 					", current engine does not support more than 1.");
 				cupLine = x;
 				istringstream(file[x][1]) >> cupTile;
-				istringstream(file[x][2]) >> cup[0];
-				istringstream(file[x][3]) >> cup[1];
-				istringstream(file[x][4]) >> cup[2];
+				istringstream(file[x][2]) >> cup.x;
+				istringstream(file[x][3]) >> cup.y;
+				istringstream(file[x][4]) >> cup.z;
 			} else {
 				throw string("data at line " + to_string(x) + " has an incorrect tag.");
 			}
@@ -160,7 +167,7 @@ void golfCourse::decipherFile() {
 
 // Goes through remaining file storing the tile data that are correct
 // Throws if input is incorrect
-void golfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineNum) {
+void GolfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineNum) {
 	vector<int> taken(pTiles.size());
 
 	// Goes through remaining data
@@ -175,7 +182,7 @@ void golfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 				throw string("multiple tile " + pTiles[x][1] + "'s are listed.");
 			} else {
 				taken[atoi(pTiles[x][1].c_str()) - 1] = 1;
-				tile temp (pTiles[x], lineNum[x]);
+				Tile temp (pTiles[x], lineNum[x]);
 				tiles.push_back(temp);
 			}
 		} 
@@ -184,13 +191,13 @@ void golfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 
 
 // Prints out the course in its entirety
-void golfCourse::printCourse() {
+void GolfCourse::printCourse() {
 	for (auto &x : tiles) {
 		cout << "tile ";
 		cout << x.tileNum << " ";
 		cout << x.numOfEdges << " ";
 		for (auto &y : x.vertices) {
-			cout << y[0] << " " << y[1] << " " << y[2] << " ";
+			cout << y.x << " " << y.y << " " << y.z << " ";
 		}
 		for (auto &y : x.neighbors) {
 			cout << y << " ";
@@ -200,11 +207,11 @@ void golfCourse::printCourse() {
 
 	cout << "tee ";
 	cout << teeTile << " ";
-	cout << tee[0] << " " << tee[1] << " " << tee[2] << endl;
+	cout << tee.x << " " << tee.y << " " << tee.z << endl;
 
 	cout << "cup ";
 	cout << cupTile << " ";
-	cout << cup[0] << " " << cup[1] << " " << cup[2] << endl;
+	cout << cup.x << " " << cup.y << " " << cup.z << endl;
 }
 
 
@@ -216,7 +223,7 @@ void golfCourse::printCourse() {
 
 
 // Used to build a course from given vector
-void golfCourse::buildCourse() {
+void GolfCourse::buildCourse() {
 
 	printCourse();	
 
