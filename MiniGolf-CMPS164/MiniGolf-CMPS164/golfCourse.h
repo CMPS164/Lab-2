@@ -33,7 +33,7 @@ class Ball: public RigidSphere {
 struct Wall: public Quad {
 	int wallNum;
 	float wallHeight;
-	array<Vertex, 4> wallVert;
+	vector <Vertex>  wallVert;
 	Wall(Vertex v1, Vertex v2, float wHeight, int wNum);
 };
 
@@ -42,8 +42,7 @@ struct Tile: public Quad {
 	int lineNum;				// Line number this information was at
 	int tileNum;
 	int numOfEdges;
-	array<Vertex, 4> tVerts;
-	vector< Vertex > vertices; //x, y, z coordinates; one per slot in the array
+	vector< Vertex > verts; //x, y, z coordinates; one per slot in the array
 	vector< int > neighbors;	// Corresponds to each pair in vertices
 	// IE: neighbor at element 0 corresponds to
 	//     vertices at element 0 and 1

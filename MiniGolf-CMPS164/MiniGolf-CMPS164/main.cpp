@@ -100,7 +100,7 @@ void calc_Normal(array<double, 3> &result, array<double, 3> v1, array<double,3> 
 void draw_Course(GolfCourse* course) {
 	vector<Tile> tiles = course->getTiles();
 	for (auto tile : tiles) {
-		vector< Vertex > vertices = tile.vertices;
+		vector< Vertex > vertices = tile.verts;
 		vector<Wall> edges = tile.walls;
 
 		//Get Face Normal

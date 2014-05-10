@@ -44,17 +44,11 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 			temp.y = atof(data[x+1].c_str());
 			temp.z = atof(data[x+2].c_str());
 			x += 2;
-			vertices.push_back(temp);
+			verts.push_back(temp);
 		}
 	}
-	tVerts[0] = vertices[0];
-	tVerts[1] = vertices[1];
-	tVerts[2] = vertices[2];
 
-	if (vertices.size() < 4) tVerts[3] = Vertex();
-	else tVerts[3] = vertices[3];
-
-	Quad(tVerts);
+	setVertices(verts);
 
 	//create walls here
 	int wallNum = 0;
@@ -67,12 +61,11 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 			//Take the vertex indices and create a new vector for a wall.
 			if (index == neighbors.size() - 1) {
 				//This check is for the case if there is no edge between the last vertice and the first one in the vector, thus we need to 'loop' around
-				v1 = vertices.at(index);
-				v2 = vertices.at(0);
-			}
-			else {
-				v1 = vertices.at(index);
-				v2 = vertices.at(index + 1);
+				v1 = verts.at(index);
+				v2 = verts.at(0);
+			} else {
+				v1 = verts.at(index);
+				v2 = verts.at(index + 1);
 			}
 			Wall temp(v1, v2, 0.1, wallNum);	//wall height is set to 0.1
 			walls.push_back(temp);
@@ -87,12 +80,12 @@ Wall::Wall(Vertex v1, Vertex v2, float wHeight, int wNum){
 	wallHeight = wHeight;
 	
 	//Four vertices for the Edge
-	wallVert[0] = Vertex(v1.x, v1.y, v1.z);
-	wallVert[1] = Vertex(v2.x, v2.y, v2.z);
-	wallVert[2] = Vertex(v2.x, v2.y + wallHeight, v2.z); 
-	wallVert[3] = Vertex(v1.x, v1.y + wallHeight, v1.z);
+	wallVert.push_back(Vertex(v1.x, v1.y, v1.z));
+	wallVert.push_back(Vertex(v2.x, v2.y, v2.z));
+	wallVert.push_back(Vertex(v2.x, v2.y + wallHeight, v2.z));
+	wallVert.push_back(Vertex(v1.x, v1.y + wallHeight, v1.z));
 
-	Quad(wallVert);
+	setVertices(wallVert);
 }
 
 // Constructor
@@ -196,7 +189,7 @@ void GolfCourse::printCourse() {
 		cout << "tile ";
 		cout << x.tileNum << " ";
 		cout << x.numOfEdges << " ";
-		for (auto &y : x.vertices) {
+		for (auto &y : x.verts) {
 			cout << y.x << " " << y.y << " " << y.z << " ";
 		}
 		for (auto &y : x.neighbors) {

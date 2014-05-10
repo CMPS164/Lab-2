@@ -7,7 +7,7 @@
 #ifndef COLLIDER_H
 #define COLLIDER_H
 
-#include <array>
+#include <vector>
 
 #include "vector3.h"
 #include "position.h"
@@ -34,6 +34,8 @@ struct Vertex {
 	Vertex operator/(Vertex div);
 	Vertex operator/(double div);
 
+	void operator=(Vertex set);
+	void operator=(double set);
 	void operator+=(Vertex add);
 	void operator+=(double add);
 	void operator-=(Vertex sub);
@@ -53,14 +55,15 @@ class Collider {
 
 class Quad: virtual public Collider {
 	private:
-		array<Vertex, 4> vertices;
+		vector <Vertex> vertices;
 		Vector3 normal;
 	public:
 		Quad();
 		Quad(Position c);
-		Quad(array<Vertex, 4> verts);
-		Quad(Position c, array<Vertex, 4> vert);
+		Quad(vector <Vertex> verts);
+		Quad(Position c, vector <Vertex> verts);
 		void calculateNormal();
+		void setVertices(vector <Vertex> verts);
 		Vector3 getNormal();
 };
 

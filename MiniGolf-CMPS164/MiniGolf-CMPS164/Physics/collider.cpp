@@ -51,6 +51,18 @@ Vertex Vertex::operator/(double div) {
 	return div == 0 ? Vertex() : Vertex(x / div, y / div, z / div);
 }
 
+void Vertex::operator=(Vertex set) {
+	x = set.x;
+	y = set.y;
+	z = set.z;
+}
+
+void Vertex::operator=(double set) {
+	x = set;
+	y = set;
+	z = set;
+}
+
 void Vertex::operator+=(Vertex add) {
 	x += add.x;
 	y += add.y;
@@ -103,36 +115,41 @@ void Vertex::operator/=(double div) {
 
 Quad::Quad() {
 	center = Position();
-	vertices[0] = Vertex(1, 1);
-	vertices[1] = Vertex(1, -1);
-	vertices[2] = Vertex(-1, -1);
-	vertices[3] = Vertex(-1, 1);
+	vertices.push_back(Vertex(1, 1));
+	vertices.push_back(Vertex(-1, 1));
+	vertices.push_back(Vertex(-1, -1));
+	vertices.push_back(Vertex(1, -1));
 	calculateNormal();
 }
 
 Quad::Quad(Position c) {
 	center = c;
-	vertices[0] = Vertex(1, 1);
-	vertices[1] = Vertex(1, -1);
-	vertices[2] = Vertex(-1, -1);
-	vertices[3] = Vertex(-1, 1);
+	vertices.push_back(Vertex(1, 1));
+	vertices.push_back(Vertex(-1, -1));
+	vertices.push_back(Vertex(-1, -1));
+	vertices.push_back(Vertex(1, -1));
 	calculateNormal();
 }
 
-Quad::Quad(array<Vertex, 4> verts) {
+Quad::Quad(vector <Vertex> verts) {
 	center = Position();
 	vertices = verts;
 	calculateNormal();
 }
 
-Quad::Quad(Position c, array<Vertex, 4> verts) {
+Quad::Quad(Position c, vector <Vertex> verts) {
 	center = c;
 	vertices = verts;
 	calculateNormal();
 }
 
 void Quad::calculateNormal() {
-	Vector3 vec1(vertices[2].x - vertices[0].x, vertices[2].y - vertices[0].y, vertices[2].z - vertices[0].z);
+	for (auto testing : vertices) {
+		testing();
+	}
+	cout << "Hi" << endl;
+
+	Vector3 vec1(vertices[0].x - vertices[vertices.size() - 1].x, vertices[0].y - vertices[vertices.size() - 1].y, vertices[0].z - vertices[vertices.size() - 1].z);
 
 	Vector3 vec2(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y, vertices[1].z - vertices[0].z);
 
@@ -147,8 +164,11 @@ void Quad::calculateNormal() {
 
 	//Getting Normalized
 	normal /= magnitude;
+}
 
-	normal();
+void Quad::setVertices(vector <Vertex> verts) {
+	vertices = verts;
+	calculateNormal();
 }
 
 Vector3 Quad::getNormal() {
