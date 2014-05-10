@@ -144,11 +144,6 @@ Quad::Quad(Position c, vector <Vertex> verts) {
 }
 
 void Quad::calculateNormal() {
-	for (auto testing : vertices) {
-		testing();
-	}
-	cout << "Hi" << endl;
-
 	Vector3 vec1(vertices[0].x - vertices[vertices.size() - 1].x, vertices[0].y - vertices[vertices.size() - 1].y, vertices[0].z - vertices[vertices.size() - 1].z);
 
 	Vector3 vec2(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y, vertices[1].z - vertices[0].z);
@@ -169,6 +164,7 @@ void Quad::calculateNormal() {
 void Quad::setVertices(vector <Vertex> verts) {
 	vertices = verts;
 	calculateNormal();
+	normal();
 }
 
 Vector3 Quad::getNormal() {
