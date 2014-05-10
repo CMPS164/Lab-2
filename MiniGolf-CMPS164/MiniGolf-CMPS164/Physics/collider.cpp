@@ -119,7 +119,7 @@ Quad::Quad() {
 	vertices.push_back(Vertex(-1, 1));
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(1, -1));
-	calculateNormal();
+	//calculateNormal();
 }
 
 Quad::Quad(Position c) {
@@ -128,43 +128,64 @@ Quad::Quad(Position c) {
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(1, -1));
-	calculateNormal();
+	//calculateNormal();
 }
 
 Quad::Quad(vector <Vertex> verts) {
 	center = Position();
 	vertices = verts;
-	calculateNormal();
+	//calculateNormal();
 }
 
 Quad::Quad(Position c, vector <Vertex> verts) {
 	center = c;
 	vertices = verts;
-	calculateNormal();
+	//calculateNormal();
 }
 
 void Quad::calculateNormal() {
-	Vector3 vec1(vertices[0].x - vertices[vertices.size() - 1].x, vertices[0].y - vertices[vertices.size() - 1].y, vertices[0].z - vertices[vertices.size() - 1].z);
+	
+	cout << "vertice1: " << vertices[0].x << " " << vertices[0].y << " " << vertices[0].z << endl;
+	cout << "vertice2: " << vertices[1].x << " " << vertices[1].y << " " << vertices[1].z << endl;
+	cout << "vertice3: " << vertices[2].x << " " << vertices[2].y << " " << vertices[2].z << endl;
+	
 
-	Vector3 vec2(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y, vertices[1].z - vertices[0].z);
+	Vector3 vec1(vertices[2].x - vertices[1].x, vertices[2].y - vertices[1].y, vertices[2].z - vertices[1].z);
+	Vector3 vec2(vertices[0].x - vertices[1].x, vertices[0].y - vertices[1].y, vertices[0].z - vertices[1].z);
+	
+	
+	cout << "vec1: " << vec1.x << " " << vec1.y << " " << vec1.z << endl;
+	cout << "vec2: " << vec2.x << " " << vec2.y << " " << vec2.z << endl;
+	
 
 	//Cross Product calculation
 	normal.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
-	normal.y = -1 * ((vec1.x * vec2.z) - (vec1.z * vec2.x));
+	normal.y =  -1 * ((vec1.x * vec2.z) -  (vec1.z * vec2.x));
 	normal.z = (vec1.x * vec2.y) - (vec1.y * vec2.x);
 
+	cout << "normal: " <<  normal.x << " " << normal.y << " " << normal.z << endl;
+	
 	//Calculating Magnitude
-	float total = pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2);
-	float magnitude = sqrt(total);
+	double total = pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2);
+	double magnitude = sqrt(total);
 
 	//Getting Normalized
+	/*
+	normal.x = normal.x / magnitude;
+	normal.y = normal.y / magnitude;
+	normal.z = normal.z / magnitude;
+	*/
+
 	normal /= magnitude;
+
+	cout << "normalized normal: " << normal.x << " " << normal.y << " " << normal.z << endl;
 }
 
 void Quad::setVertices(vector <Vertex> verts) {
 	vertices = verts;
 	calculateNormal();
 	normal();
+	
 }
 
 Vector3 Quad::getNormal() {

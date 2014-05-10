@@ -135,13 +135,13 @@ void Vector3::operator*=(double mult) {
 void Vector3::operator/=(Vector3 div) {
 	x = div.x == 0 ? 0 : (x / div.x);
 	y = div.y == 0 ? 0 : (y / div.y);
-	x = div.z == 0 ? 0 : (z / div.z);
+	z = div.z == 0 ? 0 : (z / div.z);
 }
 
 void Vector3::operator/=(double div) {
 	x = div == 0 ? 0 : (x / div);
 	y = div == 0 ? 0 : (y / div);
-	x = div == 0 ? 0 : (z / div);
+	z = div == 0 ? 0 : (z / div);
 }
 
 /*

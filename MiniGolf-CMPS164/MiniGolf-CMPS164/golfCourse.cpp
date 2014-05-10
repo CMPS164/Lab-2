@@ -48,8 +48,10 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 		}
 	}
 
+	cout << "Tile #: " << tileNum << endl;
 	setVertices(verts);
-
+	
+	
 	//create walls here
 	int wallNum = 0;
 	for (int index = 0; index < neighbors.size(); ++index) {
@@ -71,6 +73,7 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 			walls.push_back(temp);
 		}
 	}
+	
 }
 
 

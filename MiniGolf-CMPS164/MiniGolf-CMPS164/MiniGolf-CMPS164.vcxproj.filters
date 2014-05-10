@@ -48,6 +48,15 @@
     <None Include="Inputs\hole.00.db">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Debug\db\testcourse3.db">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Debug\db\testcourse1.db">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Debug\db\testcourse2.db">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="golfCourse.cpp">

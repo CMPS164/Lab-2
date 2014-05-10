@@ -1,0 +1,28 @@
+*********
+CMPS164
+Minigolf Game Engine
+Kenneth Thieu
+Francis Tang 
+Team: Schwarz Himmel
+*********
+
+Changes from Lab1
+*****************
+The rendering for the course is still done using Fixed Function Pipeline; OpenGL 2.3
+We added more files to encompass the scope of the Physics Engine, including defining a Rigidbody class
+that holds our ball. We also made our tiles and walls inherit a class called Quad; this is for interaction 
+with the Engine. We began on more camera options but the Third Person view is incomplete. We also still don't
+have a proper GUI so we still use the keyboard for interactivity.
+
+Refactoring Code
+****************
+As stated, we added more files and made some existing classes inherit another class that helps us
+with the movement and interaction in the space.
+
+Additional
+****************
+The code is still in development. As such, a lot of commented out test statements and improper organization in the code.
+
+References
+****************
+Assignment Description had what we needed, along with wikipedia.
