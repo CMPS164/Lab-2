@@ -197,7 +197,7 @@ void GL_displayFunc() {
 
 	//Draws the Golf Course
 	draw_Course(course);
-	course->golfBall.update();
+	course->update();
 
 	glFlush();
 	glutSwapBuffers();

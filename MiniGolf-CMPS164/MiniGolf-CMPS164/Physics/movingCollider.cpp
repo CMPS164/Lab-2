@@ -59,6 +59,8 @@ void RigidSphere::addForce(double dir, double vDir, double spd) {
 
 void RigidSphere::update() {
 	if (willCollide) {
+		velocity = velocity - (collisionNormal * 2 * velocity.dotProduct(collisionNormal));
+		willCollide = false;
 	} else {
 		if (velocity.moving()) {
 			position += Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate);
@@ -72,9 +74,12 @@ void RigidSphere::update() {
 		}
 		if (possibleCollisions.size() > 0) {
 			for (auto collides : possibleCollisions) {
-				if (collides->sphereCollide(position + Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate), radius)) {
-					willCollide = true;
-					break;
+				collisionNormal = collides->getCollisionVector();
+				if (collisionNormal.dotProduct(velocity) != 0) {	// If parallel to velocity, will not check
+					if (collides->sphereCollide(position + Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate), radius)) {
+						willCollide = true;
+						break;
+					}
 				}
 			}
 		}

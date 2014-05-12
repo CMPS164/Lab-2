@@ -51,6 +51,7 @@ class Collider {
 		Position center;
 		Vector3 centerToVec(Position p);
 		virtual bool sphereCollide(Position p, double r);
+		virtual Vector3 getCollisionVector();
 		virtual ~Collider() {};
 };
 
@@ -59,16 +60,21 @@ class Quad: public Collider {
 		vector <Vertex> vertices;
 		Vector3 normal;
 	public:
+		Position upperBounds;
+		Position lowerBounds;
+
 		Quad();
 		Quad(Position c);
 		Quad(vector <Vertex> verts);
 		Quad(Position c, vector <Vertex> verts);
 
 		virtual bool sphereCollide(Position p, double r);
+		virtual Vector3 getCollisionVector();
 
 		void calculateNormal();
 		void setVertices(vector <Vertex> verts);
 		void findCenter();
+		void setBounds();
 		Vector3 getNormal();
 };
 
@@ -81,6 +87,7 @@ class Sphere : public Collider {
 		Sphere(Position c, double r); 
 
 		virtual bool sphereCollide(Position p, double r);
+		virtual Vector3 getCollisionVector();
 };
 
 #endif

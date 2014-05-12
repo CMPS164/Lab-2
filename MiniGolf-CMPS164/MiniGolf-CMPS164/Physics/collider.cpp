@@ -123,6 +123,10 @@ bool Collider::sphereCollide(Position p, double r) {
 	return false;
 }
 
+Vector3 Collider::getCollisionVector() {
+	return Vector3();
+}
+
 /****************Quad Functions*******************/
 
 // Construcors
@@ -134,6 +138,7 @@ Quad::Quad() {
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(1, -1));
 	calculateNormal();
+	setBounds();
 }
 
 Quad::Quad(Position c) {
@@ -143,18 +148,21 @@ Quad::Quad(Position c) {
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(1, -1));
 	calculateNormal();
+	setBounds();
 }
 
 Quad::Quad(vector <Vertex> verts) {
 	center = Position();
 	vertices = verts;
 	calculateNormal();
+	setBounds();
 }
 
 Quad::Quad(Position c, vector <Vertex> verts) {
 	center = c;
 	vertices = verts;
 	calculateNormal();
+	setBounds();
 }
 
 // Collider overloads/functions
@@ -168,6 +176,10 @@ bool Quad::sphereCollide(Position p, double r) {
 
 	if (abs(dist) > r) return false;
 	return true;
+}
+
+Vector3 Quad::getCollisionVector() {
+	return normal;
 }
 
 // Quad specific functions
@@ -192,6 +204,7 @@ void Quad::setVertices(vector <Vertex> verts) {
 	vertices = verts;
 	calculateNormal();
 	findCenter();
+	setBounds();
 }
 
 // Finds the center of current Quad
@@ -205,6 +218,12 @@ void Quad::findCenter() {
 	}
 
 	center /= vertices.size();
+}
+
+// Sets the area that this quad covers, does not work for concave shapes
+void Quad::setBounds() {
+	double lx = vertices[0].x, ly = vertices[0].y, lz = vertices[0].z;
+	double ux = vertices[0].x, uy = vertices[0].y, uz = vertices[0].z;
 }
 
 Vector3 Quad::getNormal() {
@@ -242,4 +261,8 @@ bool Sphere::sphereCollide(Position p, double r) {
 
 	if (dist > squaredRadius) return false;
 	return true;
+}
+
+Vector3 Sphere::getCollisionVector() {
+	return Vector3();
 }

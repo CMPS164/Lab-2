@@ -14,6 +14,8 @@ class MovingCollider : public Rigidbody {
 	public:
 		bool willCollide = false;
 
+		Vector3 collisionNormal;
+		
 		vector<Collider*> possibleCollisions;
 
 		MovingCollider();

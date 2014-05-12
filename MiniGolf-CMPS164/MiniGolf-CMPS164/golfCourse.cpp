@@ -28,6 +28,10 @@ Ball::Ball(float radius, Position startLoc, Force f) : RigidSphere(radius, start
 	ballRadius = radius;
 }
 
+void Ball::update() {
+	RigidSphere::update();
+}
+
 Tile::Tile() {}
 
 // tile struct constructor
@@ -255,7 +259,12 @@ void GolfCourse::printCourse() {
 	cout << cup.x << " " << cup.y << " " << cup.z << endl;
 }
 
+// Updates everything that needs to be updated in this file
+void GolfCourse::update() {
+	golfBall.update();
 
+	
+}
 
 /////////////////////////////////////////////
 // Code for drawing ideally goes down here //

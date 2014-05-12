@@ -52,6 +52,8 @@ class Ball: public RigidSphere {
 		Ball(float radius, Force f);
 		Ball(float radius, Position startLoc);
 		Ball(float radius, Position startLoc, Force f);
+
+		void update();
 };
 
 class GolfCourse {
@@ -69,6 +71,8 @@ class GolfCourse {
 		vector<Collider*> wallsToCollider(vector<Wall> wal);
 		void putt(Force f);
 		void putt(double dir, double spd);
+
+		void update();
 	private:
 		// Position arrays should be in x, y, z format
 		Catcher mitt;	// Catcher object
