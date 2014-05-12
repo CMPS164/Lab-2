@@ -28,6 +28,8 @@ Ball::Ball(float radius, Position startLoc, Force f) : RigidSphere(radius, start
 	ballRadius = radius;
 }
 
+Tile::Tile() {}
+
 // tile struct constructor
 // Deciphers line and stores everything
 Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
@@ -48,7 +50,6 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 		}
 	}
 
-	cout << "Tile #: " << tileNum << endl;
 	setVertices(verts);
 	
 	
@@ -78,7 +79,7 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 
 
 //Wall Constructor
-Wall::Wall(Vertex v1, Vertex v2, float wHeight, int wNum){
+Wall::Wall(Vertex v1, Vertex v2, float wHeight, int wNum) : Quad(){
 	wallNum = wNum;	//Unknown what to do with WallNum, here just in case
 	wallHeight = wHeight;
 	
@@ -100,9 +101,7 @@ GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	cupTile = -1;
 
 	decipherFile();
-
-	//buildCourse();		// Builds the course from data\
-	//GL functions are in main.cpp
+	setBall();
 }
 
 //Accessors for tiles Vector, Tee and Cup Locations
@@ -116,6 +115,52 @@ Position GolfCourse::getTee() {
 
 Position GolfCourse::getCup() {
 	return cup;
+}
+
+// Sets ball onto tee
+void GolfCourse::setBall() {
+	golfBall = Ball(0.025, getTee());
+	setBallTile(teeTile);
+	golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
+}
+
+// Sets balls tile num and checks if tile in vector matches tile num
+// Correctly runs through vector if it doesn't to find matching tile
+void GolfCourse::setBallTile(int num) {
+	golfBall.tileNum = num;
+
+	if (tiles[teeTile - 1].tileNum == teeTile) {
+		golfBall.onTile = tiles[teeTile - 1];
+	} else {
+		for (auto aTile : tiles) {
+			if (aTile.tileNum == teeTile) {
+				golfBall.onTile = aTile;
+				break;
+			} else {
+				continue;
+			}
+			throw "no tile for the ball was found.";
+		}
+	}
+}
+
+// Returns a vector of walls as colliders instead
+vector<Collider*> GolfCourse::wallsToCollider(vector<Wall> wal) {
+	vector < Collider* > temp;
+
+	for (auto colider : wal) {
+		temp.push_back(new Wall(colider.wallVert[0], colider.wallVert[1], colider.wallHeight, colider.wallNum));
+	}
+
+	return temp;
+}
+
+void GolfCourse::putt(Force f) {
+	golfBall.addForce(f);
+}
+
+void GolfCourse::putt(double dir, double spd) {
+	golfBall.addForce(dir, spd);
 }
 
 // Goes through file looking for tee and cup

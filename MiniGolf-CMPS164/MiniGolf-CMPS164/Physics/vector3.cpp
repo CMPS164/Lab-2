@@ -22,16 +22,16 @@ Vector3::Vector3(double vX, double vY) : x(vX), y(vY), z(0) {
 Vector3::Vector3(double vX, double vY, double vZ) : x(vX), y(vY), z(vZ) {
 }
 
+///////////////
+// Functions //
+///////////////
+
 // Checks if Vectors is not zero
 bool Vector3::moving() {
 	if (x == 0 && y == 0 && z == 0)
 		return false;
 	return true;
 }
-
-////////////////
-// Operations //
-////////////////
 
 // Prints out all 3 vectors
 void Vector3::operator()() {
@@ -46,6 +46,10 @@ Vector3 Vector3::absolute() {
 // Returns a Vector3 
 Vector3 Vector3::singedValues() {
 	return *this / (absolute());
+}
+
+double Vector3::dotProduct(Vector3 dot) {
+	return ((x * dot.x) + (y * dot.y) + (z * dot.z));
 }
 
 /*
@@ -133,15 +137,15 @@ void Vector3::operator*=(double mult) {
 }
 
 void Vector3::operator/=(Vector3 div) {
-	x = div.x == 0 ? 0 : (x / div.x);
-	y = div.y == 0 ? 0 : (y / div.y);
-	z = div.z == 0 ? 0 : (z / div.z);
+	x = (div.x == 0 ? 0 : (x / div.x));
+	y = (div.y == 0 ? 0 : (y / div.y));
+	z = (div.z == 0 ? 0 : (z / div.z));
 }
 
 void Vector3::operator/=(double div) {
-	x = div == 0 ? 0 : (x / div);
-	y = div == 0 ? 0 : (y / div);
-	z = div == 0 ? 0 : (z / div);
+	x = (div == 0 ? 0 : (x / div));
+	y = (div == 0 ? 0 : (y / div));
+	z = (div == 0 ? 0 : (z / div));
 }
 
 /*

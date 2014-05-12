@@ -86,10 +86,22 @@ void Position::operator+=(Position add) {
 	z += add.z;
 }
 
+void Position::operator+=(double add) {
+	x += add;
+	y += add;
+	z += add;
+}
+
 void Position::operator-=(Position sub) {
 	x -= sub.x;
 	y -= sub.y;
 	z -= sub.z;
+}
+
+void Position::operator-=(double sub) {
+	x -= sub;
+	y -= sub;
+	z -= sub;
 }
 
 void Position::operator*=(Position mult) {
@@ -98,10 +110,22 @@ void Position::operator*=(Position mult) {
 	z *= mult.z;
 }
 
+void Position::operator*=(double mult) {
+	x *= mult;
+	y *= mult;
+	z *= mult;
+}
+
 void Position::operator/=(Position div) {
-	x /= div.x;
-	y /= div.y;
-	z /= div.z;
+	x = (div.x == 0 ? 0 : (x / div.x));
+	y = (div.y == 0 ? 0 : (y / div.y));
+	z = (div.z == 0 ? 0 : (z / div.z));
+}
+
+void Position::operator/=(double div) {
+	x = (div == 0 ? 0 : (x / div));
+	y = (div == 0 ? 0 : (y / div));
+	z = (div == 0 ? 0 : (z / div));
 }
 
 /*

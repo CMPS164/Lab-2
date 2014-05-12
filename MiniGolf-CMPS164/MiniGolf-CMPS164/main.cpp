@@ -33,7 +33,6 @@ struct cam_coord {
 
 //Global Golf_Course object
 GolfCourse* course;
-Ball* golfTee;
 cam_coord default{0, 3, 3, 0, 0, 0};
 cam_coord third_person_ball{ 0, 0, 0, 0, 0, 0 };
 cam_coord top_down{ 0, 3, 0, 0, 0, 0 };
@@ -64,7 +63,7 @@ void init() {
 /*
 *	This calculates FACE NORMALS. One per tile
 */
-
+/*
 void calc_Normal(array<double, 3> &result, Vertex v1, Vertex v2, Vertex v3) {
 	array<double, 3> vector_1;
 	vector_1[0] = v3.x - v2.x;
@@ -90,7 +89,7 @@ void calc_Normal(array<double, 3> &result, Vertex v1, Vertex v2, Vertex v3) {
 	result[1] = result[1] / magnitude;
 	result[2] = result[2] / magnitude;
 }
-
+*/
 
 /*
 *	This function draws the golf course through primitives.
@@ -102,20 +101,12 @@ void draw_Course(GolfCourse* course) {
 	for (auto tile : tiles) {
 		vector< Vertex > vertices = tile.verts;
 		vector<Wall> edges = tile.walls;
-
-		array<double, 3> temp;
-		//Get Face Normal
 		
 		glPushMatrix();
 		//Drawing the polygon, counter-clockwise
 		glBegin(GL_POLYGON);
-		calc_Normal(temp, vertices.at(0), vertices.at(1), vertices.at(vertices.size() - 1));
-		cout << "Kenneth: " << temp[0] << " " << temp[1] << " " << temp[2] << endl;
 
-		//glNormal3f(tile.getNormal().x, tile.getNormal().y, tile.getNormal().z);
-		//cout << "Francis: " << tile.getNormal().x << " " << tile.getNormal().y << " " << tile.getNormal().z << endl;
-		//system("pause");
-		glNormal3f(temp[0],temp[1], temp[2]);
+		glNormal3f(tile.getNormal().x, tile.getNormal().y, tile.getNormal().z);
 		for (auto vertex : vertices) {
 			float x_Coord = vertex.x;
 			float y_Coord = vertex.y;
@@ -148,8 +139,8 @@ void draw_Course(GolfCourse* course) {
 	Position cupLoc = course->getCup();
 	glPushMatrix();
 	glColor3f(0.0f, 0.0f, 1.0f);
-	glTranslatef(golfTee->position.x, golfTee->position.y + golfTee->ballRadius, golfTee->position.z);
-	glutSolidSphere(golfTee->ballRadius, 360, 360);
+	glTranslatef(course->golfBall.position.x, course->golfBall.position.y + course->golfBall.ballRadius, course->golfBall.position.z);
+	glutSolidSphere(course->golfBall.ballRadius, 360, 360);
 	glPopMatrix();
 
 	//Drawing the cup
@@ -206,7 +197,7 @@ void GL_displayFunc() {
 
 	//Draws the Golf Course
 	draw_Course(course);
-	golfTee->update();
+	course->golfBall.update();
 
 	glFlush();
 	glutSwapBuffers();
@@ -312,7 +303,7 @@ int main(int argc, char** argv) {
 	vector< vector<string> > file;	// Our file, as a vector
 
 	Catcher mitt;			// catcher object
-
+	
 	// Try block, used to catch problems in what we do
 	try {
 		// Checks file entered, asks for input if a single file is not supplied
@@ -327,11 +318,10 @@ int main(int argc, char** argv) {
 		reader fileReader (fileName);		// reader object
 		file = fileReader.getWords();		// Gets a vector of a vector of each word
 
-		//golfCourse course(file);
 		course = new GolfCourse(file);
-		golfTee = new Ball(0.025, Position(course->getTee().x, course->getTee().y, course->getTee().z));
+		//golfTee = new Ball(0.025, Position(course->getTee().x, course->getTee().y, course->getTee().z));
 
-		golfTee->addForce(0, .25);
+		course->putt(Force (45, .25));
 
 		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
 		third_person_ball = {course->getTee().x, course->getTee().y + 0.4, course->getTee().z + 0.3,

@@ -28,9 +28,13 @@ class Position {
 		void operator=(Position set);
 		void operator=(double set);
 		void operator+=(Position add);
+		void operator+=(double add);
 		void operator-=(Position sub);
+		void operator-=(double sub);
 		void operator*=(Position mult);
+		void operator*=(double mult);
 		void operator/=(Position div);
+		void operator/=(double div);
 
 		// Comparison Operations
 		bool operator==(Position equal);

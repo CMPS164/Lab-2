@@ -111,7 +111,21 @@ void Vertex::operator/=(double div) {
 	x = div == 0 ? 0 : (z / div);
 }
 
+
+/***************Collider Functions****************/
+
+// Returns a vector from center of this collider to position
+Vector3 Collider::centerToVec(Position p) {
+	return Vector3(p.x - center.x, p.y - center.y, p.z - center.z);
+}
+
+bool Collider::sphereCollide(Position p, double r) {
+	return false;
+}
+
 /****************Quad Functions*******************/
+
+// Construcors
 
 Quad::Quad() {
 	center = Position();
@@ -119,7 +133,7 @@ Quad::Quad() {
 	vertices.push_back(Vertex(-1, 1));
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(1, -1));
-	//calculateNormal();
+	calculateNormal();
 }
 
 Quad::Quad(Position c) {
@@ -128,64 +142,69 @@ Quad::Quad(Position c) {
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(-1, -1));
 	vertices.push_back(Vertex(1, -1));
-	//calculateNormal();
+	calculateNormal();
 }
 
 Quad::Quad(vector <Vertex> verts) {
 	center = Position();
 	vertices = verts;
-	//calculateNormal();
+	calculateNormal();
 }
 
 Quad::Quad(Position c, vector <Vertex> verts) {
 	center = c;
 	vertices = verts;
-	//calculateNormal();
+	calculateNormal();
 }
 
-void Quad::calculateNormal() {
-	
-	cout << "vertice1: " << vertices[0].x << " " << vertices[0].y << " " << vertices[0].z << endl;
-	cout << "vertice2: " << vertices[1].x << " " << vertices[1].y << " " << vertices[1].z << endl;
-	cout << "vertice3: " << vertices[2].x << " " << vertices[2].y << " " << vertices[2].z << endl;
-	
+// Collider overloads/functions
 
+// Checks if a sphere at a position with a radius will collide with this quad object
+bool Quad::sphereCollide(Position p, double r) {
+	Vector3 temp = centerToVec(p);
+
+	// Calculates distance to sphere
+	double dist = temp.dotProduct(normal);
+
+	if (abs(dist) > r) return false;
+	return true;
+}
+
+// Quad specific functions
+
+void Quad::calculateNormal() {
 	Vector3 vec1(vertices[2].x - vertices[1].x, vertices[2].y - vertices[1].y, vertices[2].z - vertices[1].z);
 	Vector3 vec2(vertices[0].x - vertices[1].x, vertices[0].y - vertices[1].y, vertices[0].z - vertices[1].z);
 	
-	
-	cout << "vec1: " << vec1.x << " " << vec1.y << " " << vec1.z << endl;
-	cout << "vec2: " << vec2.x << " " << vec2.y << " " << vec2.z << endl;
-	
-
 	//Cross Product calculation
 	normal.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
 	normal.y =  -1 * ((vec1.x * vec2.z) -  (vec1.z * vec2.x));
 	normal.z = (vec1.x * vec2.y) - (vec1.y * vec2.x);
-
-	cout << "normal: " <<  normal.x << " " << normal.y << " " << normal.z << endl;
 	
 	//Calculating Magnitude
 	double total = pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2);
 	double magnitude = sqrt(total);
 
-	//Getting Normalized
-	/*
-	normal.x = normal.x / magnitude;
-	normal.y = normal.y / magnitude;
-	normal.z = normal.z / magnitude;
-	*/
-
 	normal /= magnitude;
-
-	cout << "normalized normal: " << normal.x << " " << normal.y << " " << normal.z << endl;
 }
 
 void Quad::setVertices(vector <Vertex> verts) {
 	vertices = verts;
 	calculateNormal();
-	normal();
-	
+	findCenter();
+}
+
+// Finds the center of current Quad
+void Quad::findCenter() {
+	center = 0;
+
+	for (auto verts : vertices) {
+		center.x += verts.x;
+		center.y += verts.y;
+		center.z += verts.z;
+	}
+
+	center /= vertices.size();
 }
 
 Vector3 Quad::getNormal() {
@@ -209,4 +228,18 @@ Sphere::Sphere(double r) : radius(r) {
 
 Sphere::Sphere(Position c, double r) : radius(r) {
 	center = c;
+}
+
+// Checks if a sphere at a position with a radius will collide with this sphere object
+bool Sphere::sphereCollide(Position p, double r) {
+	Vector3 temp = centerToVec(p);
+
+	// Calculates distance to sphere
+	double dist = temp.dotProduct(temp);
+
+	double squaredRadius = radius + r;
+	squaredRadius *= squaredRadius;
+
+	if (dist > squaredRadius) return false;
+	return true;
 }

@@ -10,7 +10,23 @@
 #include "rigidbody.h"
 #include "collider.h"
 
-class RigidSphere: public Rigidbody, public Sphere {
+class MovingCollider : public Rigidbody {
+	public:
+		bool willCollide = false;
+
+		vector<Collider*> possibleCollisions;
+
+		MovingCollider();
+		MovingCollider(Force f);
+		MovingCollider(Position startLoc);
+		MovingCollider(Position startLoc, Force f);
+
+		void setCollisionObjects(vector<Collider*> colObjects);
+		void addCollisionObjects(Collider* colObject);
+		void addCollisionObjects(vector<Collider*> colObjects);
+};
+
+class RigidSphere: public MovingCollider, public Sphere {
 	public:
 		float radius;
 

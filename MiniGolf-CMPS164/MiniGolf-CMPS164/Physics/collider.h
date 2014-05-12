@@ -49,11 +49,12 @@ struct Vertex {
 class Collider {
 	public:
 		Position center;
-	protected:
-		~Collider() {};
+		Vector3 centerToVec(Position p);
+		virtual bool sphereCollide(Position p, double r);
+		virtual ~Collider() {};
 };
 
-class Quad: virtual public Collider {
+class Quad: public Collider {
 	private:
 		vector <Vertex> vertices;
 		Vector3 normal;
@@ -62,18 +63,24 @@ class Quad: virtual public Collider {
 		Quad(Position c);
 		Quad(vector <Vertex> verts);
 		Quad(Position c, vector <Vertex> verts);
+
+		virtual bool sphereCollide(Position p, double r);
+
 		void calculateNormal();
 		void setVertices(vector <Vertex> verts);
+		void findCenter();
 		Vector3 getNormal();
 };
 
-class Sphere : virtual public Collider {
+class Sphere : public Collider {
 	public:
 		double radius;
 		Sphere();
 		Sphere(Position c);
 		Sphere(double r);
-		Sphere(Position c, double r);
+		Sphere(Position c, double r); 
+
+		virtual bool sphereCollide(Position p, double r);
 };
 
 #endif

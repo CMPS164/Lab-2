@@ -19,6 +19,7 @@ class Vector3 {
 		bool moving();
 		Vector3 absolute();
 		Vector3 singedValues();
+		double dotProduct(Vector3 dot);
 
 		// Functor functions of this object
 		void operator()();

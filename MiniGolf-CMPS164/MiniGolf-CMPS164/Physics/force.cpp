@@ -3,6 +3,7 @@
 // Used for adding forces //
 ////////////////////////////
 
+#include <iostream> 
 #include <math.h> 
 
 #include "force.h"
@@ -40,5 +41,7 @@ void Force::setVDirection(double vDir) {
 
 // For now, this only does x and z directions
 Vector3 Force::buildVector() {
+	std::cout << sin(direction) << ": " << sin(direction) * speed << std::endl;
+	std::cout << -cos(direction) << ": " << -cos(direction) * speed << std::endl;
 	return Vector3(sin(direction) * speed, 0, -cos(direction) * speed);
 }
