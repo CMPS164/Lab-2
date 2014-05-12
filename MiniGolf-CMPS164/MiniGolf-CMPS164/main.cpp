@@ -320,7 +320,7 @@ int main(int argc, char** argv) {
 
 		course = new GolfCourse(file);
 
-		course->putt(Force (45, .35));
+		course->putt(Force (45, 0.3));
 
 		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
 		third_person_ball = {course->getTee().x, course->getTee().y + 0.4, course->getTee().z + 0.3,

@@ -384,24 +384,11 @@ void GolfCourse::update() {
 	golfBall.tileNum = checkCurLoc();
 	// If tile number has changed, switch the tile on ball and get new collision list
 	if (golfBall.tileNum != oldTileNum) {
+		cout << "switch" << endl;
 		setBallTile(golfBall.tileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
 
-		cout << "1: ";
-		golfBall.velocity();
-		golfBall.onTile.getNormal()();
-
-
-		Vector3 unitV = golfBall.onTile.getNormal().unitVec();
-
-		golfBall.velocity = golfBall.onTile.getNormal() - golfBall.velocity;
-
-
-
-
-		//cout << golfBall.velocity.dotProduct(golfBall.onTile.getNormal()) << endl;
-		cout << "2: ";
-		golfBall.velocity();
+		golfBall.velocity -= golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal())));
 	}
 }
 
