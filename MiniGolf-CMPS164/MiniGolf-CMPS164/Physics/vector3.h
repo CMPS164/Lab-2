@@ -20,6 +20,7 @@ class Vector3 {
 		Vector3 absolute();
 		Vector3 singedValues();
 		double dotProduct(Vector3 dot);
+		Vector3 unitVec();
 
 		// Functor functions of this object
 		void operator()();

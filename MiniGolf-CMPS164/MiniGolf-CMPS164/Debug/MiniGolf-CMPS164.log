@@ -1,11 +1,11 @@
-﻿Build started 5/12/2014 12:28:39 PM.
+﻿Build started 5/12/2014 3:21:17 PM.
      1>Project "C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include" /I"C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt golfCourse.cpp
          golfCourse.cpp
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(62): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(77): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(143): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(61): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(76): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(142): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(189): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(233): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(234): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
@@ -34,4 +34,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.80
+Time Elapsed 00:00:01.78

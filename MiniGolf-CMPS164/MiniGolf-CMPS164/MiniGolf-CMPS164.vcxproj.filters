@@ -106,9 +106,6 @@
     <ClInclude Include="Physics\vector3.h">
       <Filter>Header Files\Engine\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\force.h">
-      <Filter>Header Files\Engine\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\rigidbody.h">
       <Filter>Header Files\Engine\Physics</Filter>
     </ClInclude>
@@ -116,6 +113,9 @@
       <Filter>Header Files\Engine\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\movingCollider.h">
+      <Filter>Header Files\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\force.h">
       <Filter>Header Files\Engine\Physics</Filter>
     </ClInclude>
   </ItemGroup>

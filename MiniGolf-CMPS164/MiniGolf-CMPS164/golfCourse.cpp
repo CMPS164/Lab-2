@@ -56,7 +56,6 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 
 	setVertices(verts);
 	
-	
 	//create walls here
 	int wallNum = 0;
 	for (int index = 0; index < neighbors.size(); ++index) {
@@ -175,7 +174,8 @@ int GolfCourse::checkCurLoc() {
 	}
 	//Not in  any tile
 	//Let's not reach here at all please.
-	return  0;
+	throw "ball is not in any tile";
+	//return 0;
 }
 
 //Used for creating a ray for tile checking using ray casting
@@ -386,6 +386,22 @@ void GolfCourse::update() {
 	if (golfBall.tileNum != oldTileNum) {
 		setBallTile(golfBall.tileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
+
+		cout << "1: ";
+		golfBall.velocity();
+		golfBall.onTile.getNormal()();
+
+
+		Vector3 unitV = golfBall.onTile.getNormal().unitVec();
+
+		golfBall.velocity = golfBall.onTile.getNormal() - golfBall.velocity;
+
+
+
+
+		//cout << golfBall.velocity.dotProduct(golfBall.onTile.getNormal()) << endl;
+		cout << "2: ";
+		golfBall.velocity();
 	}
 }
 

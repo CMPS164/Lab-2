@@ -184,14 +184,15 @@ Vector3 Quad::getCollisionVector() {
 
 // Quad specific functions
 
+
 void Quad::calculateNormal() {
 	Vector3 vec1(vertices[2].x - vertices[1].x, vertices[2].y - vertices[1].y, vertices[2].z - vertices[1].z);
 	Vector3 vec2(vertices[0].x - vertices[1].x, vertices[0].y - vertices[1].y, vertices[0].z - vertices[1].z);
 	
 	//Cross Product calculation
 	normal.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
-	//normal.y =  -1 * ((vec1.x * vec2.z) -  (vec1.z * vec2.x));
-	normal.y = (vec1.z * vec2.x) - (vec1.x * vec2.z);
+	normal.y =  -1 * ((vec1.x * vec2.z) -  (vec1.z * vec2.x));
+	//normal.y = (vec1.z * vec2.x) - (vec1.x * vec2.z);
 	normal.z = (vec1.x * vec2.y) - (vec1.y * vec2.x);
 	
 	//Calculating Magnitude

@@ -52,6 +52,10 @@ double Vector3::dotProduct(Vector3 dot) {
 	return ((x * dot.x) + (y * dot.y) + (z * dot.z));
 }
 
+Vector3 Vector3::unitVec() {
+	return *this/sqrt(x * x + y * y + z * z);
+}
+
 /*
 * Basic Arithmetic operations
 */

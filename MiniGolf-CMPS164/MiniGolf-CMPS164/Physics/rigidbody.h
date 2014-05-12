@@ -16,23 +16,23 @@
 using namespace std;
 
 class Rigidbody {
-	public:
-		double frameRate = 33;
-		Vector3 velocity = Vector3();			// Velocity object of this class
-		Position position;						// Position object of this class
-		bool grounded = true;					// Whether the object is touching ground
+public:
+	double frameRate = 33;
+	Vector3 velocity = Vector3();			// Velocity object of this class
+	Position position;						// Position object of this class
+	bool grounded = true;					// Whether the object is touching ground
 
-		// Constructors
-		Rigidbody();
-		Rigidbody(Force f);
-		Rigidbody(Position p);
-		Rigidbody(Position p, Force f);
+	// Constructors
+	Rigidbody();
+	Rigidbody(Force f);
+	Rigidbody(Position p);
+	Rigidbody(Position p, Force f);
 
-		void addForce(Force f);
-		void addForce(double dir, double spd);
-		void addForce(double dir, double vDir, double spd);
+	void addForce(Force f);
+	void addForce(double dir, double spd);
+	void addForce(double dir, double vDir, double spd);
 
-		void update();
+	void update();
 };
 
 #endif
