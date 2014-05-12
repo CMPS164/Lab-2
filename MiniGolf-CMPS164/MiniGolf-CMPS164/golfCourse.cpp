@@ -134,12 +134,9 @@ int GolfCourse::getCupTile() {
 
 //Checks the golfBall's current Tile Location
 int GolfCourse::checkCurLoc() {
-
 	//iterates through each tile for its vertices
 	for (auto tile : tiles) {
-		//cout << "Tile " << tile.tileNum << " ";
 		vector<Vertex> temp = formRay(tile.verts);
-		//cout << temp.x << " " << temp.y << " " << temp.z << endl;
 
 		//Now we need to test all sides of a tile with the calculated ray for intersection
 		vector <Vertex> sides_a, sides_b;
@@ -149,13 +146,11 @@ int GolfCourse::checkCurLoc() {
 				//Final side loops back to initial vertex
 				a = tile.verts.at(s);
 				b = tile.verts.at(0);
-			}
-			else {
+			} else {
 				//Otherwise
 				 a = tile.verts.at(s);
 				 b = tile.verts.at(s + 1);
 			}
-			//Vector3 v = Vector3(b.x - a.x, 0, b.z - a.z);
 
 			//These will be iterated at the same time
 			sides_a.push_back(a); //Holds all first vertices/start points
@@ -223,7 +218,6 @@ vector<Vertex> GolfCourse::formRay(vector <Vertex> vertices) {
 	v_List.push_back(v1);
 	v_List.push_back(v2);
 
-	
 	return v_List;
 }
 
@@ -281,11 +275,11 @@ void GolfCourse::setBall() {
 void GolfCourse::setBallTile(int num) {
 	golfBall.tileNum = num;
 
-	if (tiles[teeTile - 1].tileNum == teeTile) {
-		golfBall.onTile = tiles[teeTile - 1];
+	if (tiles[num - 1].tileNum == num) {
+		golfBall.onTile = tiles[num - 1];
 	} else {
 		for (auto aTile : tiles) {
-			if (aTile.tileNum == teeTile) {
+			if (aTile.tileNum == num) {
 				golfBall.onTile = aTile;
 				break;
 			} else {
@@ -382,6 +376,18 @@ void GolfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 	}
 }
 
+// Updates everything that needs to be updated in this file
+void GolfCourse::update() {
+	golfBall.update();
+
+	int oldTileNum = golfBall.tileNum;
+	golfBall.tileNum = checkCurLoc();
+	// If tile number has changed, switch the tile on ball and get new collision list
+	if (golfBall.tileNum != oldTileNum) {
+		setBallTile(golfBall.tileNum);
+		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
+	}
+}
 
 // Prints out the course in its entirety
 void GolfCourse::printCourse() {
@@ -407,19 +413,9 @@ void GolfCourse::printCourse() {
 	cout << cup.x << " " << cup.y << " " << cup.z << endl;
 }
 
-// Updates everything that needs to be updated in this file
-void GolfCourse::update() {
-	
-	
-	golfBall.update();
-	golfBall.tileNum = checkCurLoc();
-	cout << "Ball's current tile is " << golfBall.tileNum << endl;
-
-}
-
 /////////////////////////////////////////////
 // Code for drawing ideally goes down here //
-////////////////////////////////////////////
+/////////////////////////////////////////////
 
 
 
