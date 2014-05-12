@@ -190,7 +190,8 @@ void Quad::calculateNormal() {
 	
 	//Cross Product calculation
 	normal.x = (vec1.y * vec2.z) - (vec1.z * vec2.y);
-	normal.y =  -1 * ((vec1.x * vec2.z) -  (vec1.z * vec2.x));
+	//normal.y =  -1 * ((vec1.x * vec2.z) -  (vec1.z * vec2.x));
+	normal.y = (vec1.z * vec2.x) - (vec1.x * vec2.z);
 	normal.z = (vec1.x * vec2.y) - (vec1.y * vec2.x);
 	
 	//Calculating Magnitude

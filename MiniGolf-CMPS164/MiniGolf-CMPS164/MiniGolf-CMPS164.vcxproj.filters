@@ -89,6 +89,9 @@
     <ClCompile Include="Physics\movingCollider.cpp">
       <Filter>Source Files\Engine\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="tileCheck.cpp">
+      <Filter>Source Files\Engine\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="golfCourse.h">
@@ -116,6 +119,9 @@
       <Filter>Header Files\Engine\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\movingCollider.h">
+      <Filter>Header Files\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="tileCheck.h">
       <Filter>Header Files\Engine\Physics</Filter>
     </ClInclude>
   </ItemGroup>

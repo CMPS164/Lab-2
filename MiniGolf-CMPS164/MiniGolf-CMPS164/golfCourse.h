@@ -66,11 +66,18 @@ class GolfCourse {
 		vector<Tile> getTiles();
 		Position getTee();
 		Position getCup();
+		int getTeeTile();
+		int getCupTile();
+		int checkCurLoc();
+		vector<Vertex> formRay(vector <Vertex> vertices); //Used for Ray Casting
+		bool intersectionTest(Vertex v1a, Vertex v1b, Vertex v2a, Vertex v2b);
 		void setBall();
 		void setBallTile(int num);
 		vector<Collider*> wallsToCollider(vector<Wall> wal);
 		void putt(Force f);
 		void putt(double dir, double spd);
+
+		
 
 		void update();
 	private:

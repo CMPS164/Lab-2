@@ -95,6 +95,7 @@
     <ClCompile Include="Physics\rigidbody.cpp" />
     <ClCompile Include="Physics\position.cpp" />
     <ClCompile Include="Physics\vector3.cpp" />
+    <ClCompile Include="tileCheck.cpp" />
     <ClCompile Include="Util\catcher.cpp" />
     <ClCompile Include="Util\reader.cpp" />
   </ItemGroup>
@@ -106,6 +107,7 @@
     <ClInclude Include="Physics\rigidbody.h" />
     <ClInclude Include="Physics\position.h" />
     <ClInclude Include="Physics\vector3.h" />
+    <ClInclude Include="tileCheck.h" />
     <ClInclude Include="Util\catcher.h" />
     <ClInclude Include="Util\reader.h" />
   </ItemGroup>
