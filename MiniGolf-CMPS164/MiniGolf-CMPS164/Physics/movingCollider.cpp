@@ -59,6 +59,7 @@ void RigidSphere::addForce(double dir, double vDir, double spd) {
 
 void RigidSphere::update() {
 	if (willCollide) {
+		cout << "Hi" << endl;
 		velocity = velocity - (collisionNormal * 2 * velocity.dotProduct(collisionNormal));
 		willCollide = false;
 	} else {
@@ -68,9 +69,18 @@ void RigidSphere::update() {
 		}
 		if (grounded) {
 			// Simulate rolling friction for now
-			velocity -= velocity.singedValues() * 0.01 / frameRate;
-			if (velocity.absolute() <= .01)
-				velocity = 0;
+			velocity -= (velocity / 8)/frameRate;
+
+			//velocity -= (velocity.singedValues() * (0.01 / frameRate));
+			if (velocity.absolute().x <= (.01 / frameRate)) {
+				velocity.x = 0;
+			}
+			if (velocity.absolute().y <= (.01 / frameRate)) {
+				velocity.y = 0;
+			}
+			if (velocity.absolute().z <= (.01 / frameRate)) {
+				velocity.z = 0;
+			}
 		}
 		if (possibleCollisions.size() > 0) {
 			for (auto collides : possibleCollisions) {

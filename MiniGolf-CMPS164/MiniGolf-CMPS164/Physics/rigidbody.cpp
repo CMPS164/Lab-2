@@ -38,8 +38,16 @@ void Rigidbody::update() {
 	}
 	if (grounded) {
 		// Simulate rolling friction for now
-		velocity -= velocity.singedValues() * 0.01 / frameRate;
-		if (velocity.absolute() <= .01)
-			velocity = 0;
+		velocity -= (velocity.singedValues() * (0.01 / frameRate));
+		velocity();
+		if (velocity.absolute().x <= (.01 / frameRate)) {
+			velocity.x = 0;
+		}
+		if (velocity.absolute().y <= (.01 / frameRate)) {
+			velocity.y = 0;
+		}
+		if (velocity.absolute().z <= (.01 / frameRate)) {
+			velocity.z = 0;
+		}
 	}
 }

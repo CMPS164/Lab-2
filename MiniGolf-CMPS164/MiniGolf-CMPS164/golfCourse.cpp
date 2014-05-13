@@ -105,7 +105,6 @@ GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 
 	decipherFile();
 	setBall();
-	//system("pause");
 }
 
 //Accessors for tiles Vector, Tee and Cup Locations
@@ -386,8 +385,8 @@ void GolfCourse::update() {
 	if (golfBall.tileNum != oldTileNum) {
 		setBallTile(golfBall.tileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
-
-		golfBall.velocity -= golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal())));
+		golfBall.velocity -= (golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal()))));
+		golfBall.velocity();
 	}
 
 	//Intersection Test for Ball and Cup
