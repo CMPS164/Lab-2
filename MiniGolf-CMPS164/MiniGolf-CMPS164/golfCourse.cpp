@@ -389,6 +389,31 @@ void GolfCourse::update() {
 
 		golfBall.velocity -= golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal())));
 	}
+
+	//Intersection Test for Ball and Cup
+	//Only run if the golfBall's current tile is the same as the cup tile
+	if (golfBall.tileNum == cupTile) {
+		//Using the sphere class as a collider for the cup
+		Sphere cupCollider = Sphere(getCup(), (golfBall.ballRadius * 2));
+		bool ballCupIntersect = cupCollider.sphereCollide(golfBall.position, golfBall.ballRadius);
+
+		/*
+		if (golfBall.velocity != Vector3()) {
+			cout << "Velocity: " << golfBall.velocity.x << " " << golfBall.velocity.y << " " << golfBall.velocity.z << endl;
+		}
+		*/
+		if (ballCupIntersect) {
+
+			//Check if the velocity of the ball is too fast
+			if (golfBall.velocity <= Vector3(0.1, 0.1, 0.1)) {
+				golfBall.velocity = Vector3();	//Stops the ball
+			}
+			else {
+				//Change the ball's direction and use its current velocity to create the "lip out" effect
+
+			}
+		}
+	}
 }
 
 // Prints out the course in its entirety

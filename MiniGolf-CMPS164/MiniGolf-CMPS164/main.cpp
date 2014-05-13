@@ -151,13 +151,13 @@ void draw_Course(GolfCourse* course) {
 	GLUquadric* hole = gluNewQuadric();
 	gluQuadricNormals(hole, GL_SMOOTH);
 	glRotatef(90, 1, 0, 0);
-	gluCylinder(hole, 0.03, 0.03, 0.05, 360, 1); //parameters are (gluQuatric, radius of base, radius of top, height, slices, subdivisions)
+	gluCylinder(hole, (course->golfBall.ballRadius * 2), (course->golfBall.ballRadius * 2), 0.05, 360, 1); //parameters are (gluQuatric, radius of base, radius of top, height, slices, subdivisions)
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glRotatef(180, 1, 0, 0);
-	gluDisk(hole, 0.0f, 0.03, 360, 1);
+	gluDisk(hole, 0.0f, (course->golfBall.ballRadius * 2), 360, 1);
 	glRotatef(180, 1, 0, 0);
 	glTranslatef(0, 0, 0.05);
-	gluDisk(hole, 0.0f, 0.03, 360, 1);
+	gluDisk(hole, 0.0f, (course->golfBall.ballRadius * 2), 360, 1);
 	glPopMatrix();
 }
 
@@ -175,6 +175,9 @@ void GL_displayFunc() {
 //	glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
 	
+	third_person_ball = { course->golfBall.position.x, course->golfBall.position.y + 0.4, course->golfBall.position.z + 0.3,
+		course->golfBall.position.x, course->golfBall.position.y, course->golfBall.position.z };
+
 	if (third_person_cam) {
 		gluPerspective(90, windowWidth / windowHeight, 0.1, 100);
 		glMatrixMode(GL_MODELVIEW);
@@ -320,7 +323,8 @@ int main(int argc, char** argv) {
 
 		course = new GolfCourse(file);
 
-		course->putt(Force (45, 0.3));
+		course->putt(Force (46, .37));
+		//course->putt(Force (0, .6));
 
 		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
 		third_person_ball = {course->getTee().x, course->getTee().y + 0.4, course->getTee().z + 0.3,
