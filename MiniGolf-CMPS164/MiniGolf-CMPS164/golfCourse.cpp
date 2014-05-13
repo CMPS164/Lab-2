@@ -384,7 +384,6 @@ void GolfCourse::update() {
 	golfBall.tileNum = checkCurLoc();
 	// If tile number has changed, switch the tile on ball and get new collision list
 	if (golfBall.tileNum != oldTileNum) {
-		cout << "switch" << endl;
 		setBallTile(golfBall.tileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
 
