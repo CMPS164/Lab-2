@@ -15,6 +15,8 @@
 #include "Physics/movingCollider.h"
 #include "Physics/rigidbody.h"
 
+#define PI 3.14159265
+
 using namespace std;
 
 struct Wall : public Quad {

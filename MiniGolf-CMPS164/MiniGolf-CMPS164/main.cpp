@@ -320,10 +320,10 @@ int main(int argc, char** argv) {
 
 		reader fileReader (fileName);		// reader object
 		file = fileReader.getWords();		// Gets a vector of a vector of each word
-
+		
 		course = new GolfCourse(file);
 
-		course->putt(Force (45, 0.35));
+		course->putt(Force (0, 1.5));
 		//course->putt(Force (0, .6));
 
 		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.

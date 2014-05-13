@@ -134,6 +134,7 @@ int GolfCourse::getCupTile() {
 int GolfCourse::checkCurLoc() {
 	//iterates through each tile for its vertices
 	for (auto tile : tiles) {
+		
 		vector<Vertex> temp = formRay(tile.verts);
 
 		//Now we need to test all sides of a tile with the calculated ray for intersection
@@ -377,8 +378,6 @@ void GolfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 
 // Updates everything that needs to be updated in this file
 void GolfCourse::update() {
-	golfBall.update();
-
 	int oldTileNum = golfBall.tileNum;
 	golfBall.tileNum = checkCurLoc();
 	// If tile number has changed, switch the tile on ball and get new collision list
@@ -386,7 +385,22 @@ void GolfCourse::update() {
 		setBallTile(golfBall.tileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
 		golfBall.velocity -= (golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal()))));
-		golfBall.velocity();
+
+
+
+		if (golfBall.onTile.getNormal().y != 1) {
+			golfBall.gravityVec = Vector3(asin(golfBall.onTile.getNormal().x), -acos(golfBall.onTile.getNormal().y), asin(golfBall.onTile.getNormal().z));
+			golfBall.gravityVec *= 180;
+			golfBall.gravityVec /= PI;
+			golfBall.gravityVec /= 90;
+			golfBall.gravityVec *= .98;
+
+			golfBall.gravityVec.y /= 2.1;		// If this isn't here, the ball will bleed into the floor
+
+			golfBall.gravityOn = true;
+		} else {
+			golfBall.gravityOn = false;
+		}
 	}
 
 	//Intersection Test for Ball and Cup
@@ -413,6 +427,7 @@ void GolfCourse::update() {
 			}
 		}
 	}
+	golfBall.update();
 }
 
 // Prints out the course in its entirety

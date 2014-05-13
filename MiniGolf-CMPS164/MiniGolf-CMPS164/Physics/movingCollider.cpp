@@ -59,10 +59,15 @@ void RigidSphere::addForce(double dir, double vDir, double spd) {
 
 void RigidSphere::update() {
 	if (willCollide) {
-		cout << "Hi" << endl;
+		velocity();
 		velocity = velocity - (collisionNormal * 2 * velocity.dotProduct(collisionNormal));
 		willCollide = false;
 	} else {
+		/*
+		if (gravityOn) {
+			velocity += (gravityVec / frameRate);
+		}
+		*/
 		if (velocity.moving()) {
 			position += Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate);
 			center = position;
@@ -72,16 +77,18 @@ void RigidSphere::update() {
 			velocity -= (velocity / 8)/frameRate;
 
 			//velocity -= (velocity.singedValues() * (0.01 / frameRate));
-			if (velocity.absolute().x <= (.01 / frameRate)) {
+			if (velocity.absolute().x <= (.1 / frameRate)) {
 				velocity.x = 0;
 			}
-			if (velocity.absolute().y <= (.01 / frameRate)) {
+			if (velocity.absolute().y <= (.1 / frameRate)) {
 				velocity.y = 0;
 			}
-			if (velocity.absolute().z <= (.01 / frameRate)) {
+			if (velocity.absolute().z <= (.1 / frameRate)) {
 				velocity.z = 0;
 			}
 		}
+		
+
 		if (possibleCollisions.size() > 0) {
 			for (auto collides : possibleCollisions) {
 				collisionNormal = collides->getCollisionVector();
