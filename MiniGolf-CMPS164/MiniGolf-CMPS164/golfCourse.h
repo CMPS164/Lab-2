@@ -37,6 +37,7 @@ struct Tile : public Quad {
 	// IE: neighbor at element 0 corresponds to
 	//     vertices at element 0 and 1
 	vector<Wall> walls;
+	vector<Wall> tileCheckWalls;
 	Tile();
 	Tile(vector<string> data, int lNum);
 };

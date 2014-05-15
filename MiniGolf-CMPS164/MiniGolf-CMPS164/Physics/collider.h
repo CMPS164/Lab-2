@@ -70,12 +70,15 @@ class Quad: public Collider {
 
 		virtual bool sphereCollide(Position p, double r);
 		virtual Vector3 getCollisionVector();
-
+		
+		bool sphereTileEdgeCollide(Position p);
+		
 		void calculateNormal();
 		void setVertices(vector <Vertex> verts);
 		void findCenter();
 		void setBounds();
 		Vector3 getNormal();
+		int getToTileNum();
 };
 
 class Sphere : public Collider {

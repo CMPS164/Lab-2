@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "golfCourse.h"
+#include <cmath>
 
 Ball::Ball() : RigidSphere() {
 	ballRadius = 1;
@@ -58,12 +59,14 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 	
 	//create walls here
 	int wallNum = 0;
+	int tileEdgeNum = 0;
+	Vertex v1;
+	Vertex v2;
+
 	for (int index = 0; index < neighbors.size(); ++index) {
 		if (neighbors.at(index) == 0) { //There is no connecting tile and thus is an edge
 			wallNum++;
-			Vertex v1;
-			Vertex v2;
-
+			
 			//Take the vertex indices and create a new vector for a wall.
 			if (index == neighbors.size() - 1) {
 				//This check is for the case if there is no edge between the last vertice and the first one in the vector, thus we need to 'loop' around
@@ -75,6 +78,23 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 			}
 			Wall temp(v1, v2, 0.1, wallNum);	//wall height is set to 0.1
 			walls.push_back(temp);
+		}
+		else {
+			//This is an Invisible Edge for Tile Checks
+			tileEdgeNum = neighbors.at(index);
+			//cout << " " << tileEdgeNum << " ";
+			//Take the vertex indices and create a new vector for a wall.
+			if (index == neighbors.size() - 1) {
+				//This check is for the case if there is no edge between the last vertice and the first one in the vector, thus we need to 'loop' around
+				v1 = verts.at(index);
+				v2 = verts.at(0);
+			}
+			else {
+				v1 = verts.at(index);
+				v2 = verts.at(index + 1);
+			}
+			Wall temp2(v1, v2, 0.1, tileEdgeNum);
+			tileCheckWalls.push_back(temp2);
 		}
 	}
 	
@@ -133,14 +153,16 @@ int GolfCourse::getCupTile() {
 //Checks the golfBall's current Tile Location
 int GolfCourse::checkCurLoc() {
 	//iterates through each tile for its vertices
-	for (auto tile : tiles) {
-		
+	for (int t = 0; t < tiles.size(); t++) {
+		Tile tile = tiles.at(t);
 		vector<Vertex> temp = formRay(tile.verts);
 
 		//Now we need to test all sides of a tile with the calculated ray for intersection
 		vector <Vertex> sides_a, sides_b;
+		double y_average = 0;	//This tests for cases where tiles overlap
 		for (int s = 0; s < tile.verts.size(); s++) {
 			Vertex a, b;
+			y_average += tile.verts.at(s).y;
 			if (s == tile.verts.size() - 1) {
 				//Final side loops back to initial vertex
 				a = tile.verts.at(s);
@@ -156,6 +178,7 @@ int GolfCourse::checkCurLoc() {
 
 			sides_b.push_back(b); //Hold all second vertices/end points
 		}
+		y_average = y_average / tile.verts.size();	//Average
 		
 		//Testing ray against all sides for intersections
 		int intersections = 0;
@@ -169,7 +192,10 @@ int GolfCourse::checkCurLoc() {
 		//The points lies in the polygon/tile if the # of intersections is odd
 		if ((intersections & 1) == 1) {
 			//inside
-			return tile.tileNum;
+			if (abs(y_average - golfBall.position.y) >= 0) {
+				return tile.tileNum;
+			}
+			
 		}
 	}
 	//Not in  any tile
@@ -379,13 +405,33 @@ void GolfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 // Updates everything that needs to be updated in this file
 void GolfCourse::update() {
 	int oldTileNum = golfBall.tileNum;
+	
 	golfBall.tileNum = checkCurLoc();
+	/*
+	bool breakOut = false;
+	for (auto tile : tiles) {
+		for (auto Wall : tile.tileCheckWalls) {
+			if (Wall.sphereTileEdgeCollide(golfBall.position)) {
+				golfBall.tileNum = Wall.wallNum;
+				cout << Wall.wallNum << " THIS" << endl;
+				breakOut = true;
+				break;
+			}
+		}
+		if (breakOut) { 
+			
+			break;
+		}
+	}
+	*/
+	
 	// If tile number has changed, switch the tile on ball and get new collision list
 	if (golfBall.tileNum != oldTileNum) {
+		
+		cout << "Ball is in Tile: " << golfBall.tileNum << endl;
 		setBallTile(golfBall.tileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
 		golfBall.velocity -= (golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal()))));
-
 
 
 		if (golfBall.onTile.getNormal().y != 1) {

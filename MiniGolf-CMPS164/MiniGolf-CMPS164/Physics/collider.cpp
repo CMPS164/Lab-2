@@ -178,6 +178,17 @@ bool Quad::sphereCollide(Position p, double r) {
 	return true;
 }
 
+bool Quad::sphereTileEdgeCollide(Position p) {
+	Vector3 temp = centerToVec(p);
+
+	// Calculates distance to sphere
+	double dist = temp.dotProduct(normal);
+
+	if (abs(dist) > 0) return false;
+	
+	return true;
+}
+
 Vector3 Quad::getCollisionVector() {
 	return normal;
 }
@@ -231,7 +242,6 @@ void Quad::setBounds() {
 Vector3 Quad::getNormal() {
 	return normal;
 }
-
 
 /*************Sphere Functions****************/
 

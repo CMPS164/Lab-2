@@ -175,7 +175,7 @@ void GL_displayFunc() {
 //	glMatrixMode(GL_MODELVIEW);
 	//glLoadIdentity();
 	
-	third_person_ball = { course->golfBall.position.x, course->golfBall.position.y + 0.4, course->golfBall.position.z + 0.3,
+	third_person_ball = { course->golfBall.position.x, course->golfBall.position.y + 0.2, course->golfBall.position.z + 0.3,
 		course->golfBall.position.x, course->golfBall.position.y, course->golfBall.position.z };
 
 	if (third_person_cam) {
@@ -322,9 +322,12 @@ int main(int argc, char** argv) {
 		file = fileReader.getWords();		// Gets a vector of a vector of each word
 		
 		course = new GolfCourse(file);
-
-		course->putt(Force (0, 1.5));
-		//course->putt(Force (0, .6));
+		//course->golfBall.position = Position(-.75, 0, 1);
+		//course->golfBall.position = Position(0.75, 0, 0.6);
+		
+		course->putt(Force (0, 1));
+		//course->putt(Force(0, 1));
+		//course->putt(Force (46, .37));
 
 		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
 		third_person_ball = {course->getTee().x, course->getTee().y + 0.4, course->getTee().z + 0.3,
@@ -349,6 +352,16 @@ int main(int argc, char** argv) {
 	cout << "'T' to focus on the Tee" << endl;
 	cout << "'O' to focus on the Origin" << endl;
 	cout << "'C' to focus on the Cup" << endl;
+
+	
+	for (auto tile : course->getTiles()) {
+		cout << "Tile # " << tile.tileNum << " and the number of Walls are " << tile.walls.size() << " and the number of border checks are " << tile.tileCheckWalls.size() << endl;
+		for (auto Wall : tile.tileCheckWalls) {
+			cout << "Tile to enter is numbered " << Wall.wallNum << endl;
+			cout << "V1 is <" << Wall.wallVert.at(0).x << " " << Wall.wallVert.at(0).y << " " << Wall.wallVert.at(0).z << "> and V2 is <" << Wall.wallVert.at(1).x << " " << Wall.wallVert.at(1).y << " " << Wall.wallVert.at(1).z << ">" << endl;
+		}
+	}
+	
 
 	//OpenGL Functions only begin if file reader succeeded
 	glutInit(&argc, argv);

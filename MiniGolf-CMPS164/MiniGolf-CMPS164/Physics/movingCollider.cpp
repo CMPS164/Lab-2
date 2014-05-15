@@ -59,7 +59,7 @@ void RigidSphere::addForce(double dir, double vDir, double spd) {
 
 void RigidSphere::update() {
 	if (willCollide) {
-		velocity();
+		//velocity();
 		velocity = velocity - (collisionNormal * 2 * velocity.dotProduct(collisionNormal));
 		willCollide = false;
 	} else {
