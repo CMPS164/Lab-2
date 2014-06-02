@@ -78,8 +78,7 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 			}
 			Wall temp(v1, v2, 0.1, wallNum);	//wall height is set to 0.1
 			walls.push_back(temp);
-		}
-		else {
+		} else {
 			//This is an Invisible Edge for Tile Checks
 			tileEdgeNum = neighbors.at(index);
 			//cout << " " << tileEdgeNum << " ";
@@ -88,13 +87,12 @@ Tile::Tile(vector<string> data, int lNum): lineNum(lNum){
 				//This check is for the case if there is no edge between the last vertice and the first one in the vector, thus we need to 'loop' around
 				v1 = verts.at(index);
 				v2 = verts.at(0);
-			}
-			else {
+			} else {
 				v1 = verts.at(index);
 				v2 = verts.at(index + 1);
 			}
-			Wall temp2(v1, v2, 0.1, tileEdgeNum);
-			tileCheckWalls.push_back(temp2);
+			TriggerWall temp2(v1, v2, 0.1, tileEdgeNum);
+			triggerWalls.push_back(temp2);
 		}
 	}
 	
@@ -115,6 +113,29 @@ Wall::Wall(Vertex v1, Vertex v2, float wHeight, int wNum) : Quad(){
 	setVertices(wallVert);
 }
 
+//Wall Constructor
+TriggerWall::TriggerWall(Vertex v1, Vertex v2, float wHeight, int wNum) : Quad(){
+	wallNum = wNum;	//Unknown what to do with WallNum, here just in case
+	wallHeight = wHeight;
+	//Four vertices for the Edge
+	wallVert.push_back(Vertex(v1.x, v1.y, v1.z));
+	wallVert.push_back(Vertex(v2.x, v2.y, v2.z));
+	wallVert.push_back(Vertex(v2.x, v2.y + wallHeight, v2.z));
+	wallVert.push_back(Vertex(v1.x, v1.y + wallHeight, v1.z));
+
+	isPhysical = false;
+
+	setVertices(wallVert);
+}
+
+void TriggerWall::onCollision() {
+	newTileNum = wallNum;
+}
+
+void TriggerWall::update() {
+	Quad::update();
+}
+
 // Constructor
 GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	file = newFile;
@@ -125,6 +146,7 @@ GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 
 	decipherFile();
 	setBall();
+	newTileNum = getTeeTile();
 }
 
 //Accessors for tiles Vector, Tee and Cup Locations
@@ -149,151 +171,12 @@ int GolfCourse::getCupTile() {
 	return cupTile;
 }
 
-
-//Checks the golfBall's current Tile Location
-int GolfCourse::checkCurLoc() {
-	//iterates through each tile for its vertices
-	for (int t = 0; t < tiles.size(); t++) {
-		Tile tile = tiles.at(t);
-		vector<Vertex> temp = formRay(tile.verts);
-
-		//Now we need to test all sides of a tile with the calculated ray for intersection
-		vector <Vertex> sides_a, sides_b;
-		double y_average = 0;	//This tests for cases where tiles overlap
-		for (int s = 0; s < tile.verts.size(); s++) {
-			Vertex a, b;
-			y_average += tile.verts.at(s).y;
-			if (s == tile.verts.size() - 1) {
-				//Final side loops back to initial vertex
-				a = tile.verts.at(s);
-				b = tile.verts.at(0);
-			} else {
-				//Otherwise
-				 a = tile.verts.at(s);
-				 b = tile.verts.at(s + 1);
-			}
-
-			//These will be iterated at the same time
-			sides_a.push_back(a); //Holds all first vertices/start points
-
-			sides_b.push_back(b); //Hold all second vertices/end points
-		}
-		y_average = y_average / tile.verts.size();	//Average
-		
-		//Testing ray against all sides for intersections
-		int intersections = 0;
-		for (int side = 0; side < tile.numOfEdges; side++) {
-			//Test here
-			//If True, increment intersection
-			bool testResult = intersectionTest(temp.at(0), temp.at(1), sides_a.at(side), sides_b.at(side));
-			if (testResult) intersections++;
-		}
-
-		//The points lies in the polygon/tile if the # of intersections is odd
-		if ((intersections & 1) == 1) {
-			//inside
-			if (abs(y_average - golfBall.position.y) >= 0) {
-				return tile.tileNum;
-			}
-			
-		}
-	}
-	//Not in  any tile
-	//Let's not reach here at all please.
-	throw "ball is not in any tile";
-	//return 0;
-}
-
-//Used for creating a ray for tile checking using ray casting
-vector<Vertex> GolfCourse::formRay(vector <Vertex> vertices) {
-	//Loop through all vertices to find XMin/Max and ZMin/Max
-	//I'm ignoring Y for now
-	//This is for changes in this code to find a Ray for testing
-	double xMin = 0, xMax = 0, zMin = 0, zMax = 0;
-	double epsilon = 0.001;
-
-	for (int i = 0; i < vertices.size(); i++) {
-		if (i == 0) {
-			xMin = xMax = vertices.at(i).x;
-			zMin = zMax = vertices.at(i).z;
-		}
-		else {
-			if (vertices.at(i).x <= xMin) { xMin = vertices.at(i).x; }
-			else if (vertices.at(i).x >= xMax) { xMax = vertices.at(i).x; }
-			if (vertices.at(i).z <= zMin) { zMin = vertices.at(i).z; }
-			else if (vertices.at(i).z >= zMax) { zMax = vertices.at(i).z; }
-		}
-	}
-
-	//epsilon = ((xMax - xMin) / 100);
-	//cout << xMin << " " << xMax << " " << zMin << " " << zMax << endl;
-
-	//Possible Rays, taken from Stack Overflow
-	//episilon e prevents rounding errors?
-	/*(Xmin - e/p.y) to (p.x/p.y) or
-	(p.x/p.y) to (Xmax + e/p.y) or
-	(p.x/Ymin - e) to (p.x/p.y) or
-	(p.x/p.y) to (p.x/Ymax + e)
-	*/
-
-	vector<Vertex> v_List;
-	//I'm using Vectors to simulate vertices
-	//This needs to change to reflect the Ball's current position
-	Vertex v1 = Vertex(xMin - epsilon, 0, golfBall.position.z);	//Start
-	Vertex v2 = Vertex(golfBall.position.x, 0, golfBall.position.z);	//End
-	v_List.push_back(v1);
-	v_List.push_back(v2);
-
-	return v_List;
-}
-
-//Intersection Method
-//See this link: http://stackoverflow.com/questions/217578/point-in-polygon-aka-hit-test
-bool GolfCourse::intersectionTest(Vertex v1a, Vertex v1b, Vertex v2a, Vertex v2b) {
-	float d1, d2;
-	float a1, a2, b1, b2, c1, c2;
-
-	//Convert Vector 1 into a line
-	//Vector 1 are the start and end points defined from v1a and v1b
-	//Line Equation Ax + By + C = 0; we are using Bz instead
-	a1 = v1b.z - v1a.z;
-	b1 = v1a.x - v1b.x;
-	c1 = (v1b.x * v1a.z) - (v1a.x * v1b.z);
-
-	//Every point (x,z) that solves the equation above is on the line
-	//Otherwise its above or below it
-	//Insert the points of Vector 2 into the above equation
-	d1 = (a1 * v2a.x) + (b1 * v2a.z) + c1;
-	d2 = (a1 * v2b.x) + (b1 * v2b.z) + c1;
-
-	//if d1 and d2 have the same sign, then no intersection is possible due to being on the same side
-	//Don't test 0; it means its on the line
-	if ((d1 > 0 && d2 > 0) || (d1 < 0 && d2 < 0)) return false;
-
-	//Do the same thing for Vector 2 as Vector 1
-	//and plug in the values of Vector 1 to test
-	a2 = v2b.z - v2a.z;
-	b2 = v2a.x - v2b.x;
-	c2 = (v2b.x * v2a.z) - (v2a.x * v2b.z);
-
-	d1 = (a2 * v1a.x) + (b2 * v1a.z) + c2;
-	d2 = (a2 * v1b.x) + (b2 * v1b.z) + c2;
-
-	if ((d1 > 0 && d2 > 0) || (d1 < 0 && d2 < 0)) return false;
-
-	//Collinear tests don't count for collision so return false
-	//Collinear means the vectors instersect infinitely many times
-	if ((a1 * b2) - (a2 * b1) == 0) return false;
-
-	//Reach here, the vectors have to intersect once
-	return true;
-}
-
 // Sets ball onto tee
 void GolfCourse::setBall() {
 	golfBall = Ball(0.025, getTee());
 	setBallTile(teeTile);
 	golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
+	golfBall.addCollisionObjects(triggerWallsToCollider(golfBall.onTile.triggerWalls));
 }
 
 // Sets balls tile num and checks if tile in vector matches tile num
@@ -322,6 +205,16 @@ vector<Collider*> GolfCourse::wallsToCollider(vector<Wall> wal) {
 
 	for (auto colider : wal) {
 		temp.push_back(new Wall(colider.wallVert[0], colider.wallVert[1], colider.wallHeight, colider.wallNum));
+	}
+
+	return temp;
+}
+
+vector<Collider*> GolfCourse::triggerWallsToCollider(vector<TriggerWall> wal) {
+	vector < Collider* > temp;
+
+	for (auto colider : wal) {
+		temp.push_back(new TriggerWall(colider.wallVert[0], colider.wallVert[1], colider.wallHeight, colider.wallNum));
 	}
 
 	return temp;
@@ -403,37 +296,19 @@ void GolfCourse::inputTiles(vector< vector<string> > &pTiles, vector<int> &lineN
 }
 
 // Updates everything that needs to be updated in this file
-void GolfCourse::update() {
-	int oldTileNum = golfBall.tileNum;
-	
-	golfBall.tileNum = checkCurLoc();
-	/*
-	bool breakOut = false;
-	for (auto tile : tiles) {
-		for (auto Wall : tile.tileCheckWalls) {
-			if (Wall.sphereTileEdgeCollide(golfBall.position)) {
-				golfBall.tileNum = Wall.wallNum;
-				cout << Wall.wallNum << " THIS" << endl;
-				breakOut = true;
-				break;
-			}
-		}
-		if (breakOut) { 
-			
-			break;
-		}
-	}
-	*/
-	
+void GolfCourse::update() {	
 	// If tile number has changed, switch the tile on ball and get new collision list
-	if (golfBall.tileNum != oldTileNum) {
-		
+	if (golfBall.tileNum != newTileNum) {
+
+
 		cout << "Ball is in Tile: " << golfBall.tileNum << endl;
-		setBallTile(golfBall.tileNum);
+		setBallTile(newTileNum);
 		golfBall.setCollisionObjects(wallsToCollider(golfBall.onTile.walls));
+		golfBall.addCollisionObjects(triggerWallsToCollider(golfBall.onTile.triggerWalls));
+
 		golfBall.velocity -= (golfBall.onTile.getNormal() * ((golfBall.velocity.dotProduct(golfBall.onTile.getNormal())) / (golfBall.onTile.getNormal().dotProduct(golfBall.onTile.getNormal()))));
 
-
+		/*
 		if (golfBall.onTile.getNormal().y != 1) {
 			golfBall.gravityVec = Vector3(asin(golfBall.onTile.getNormal().x), -acos(golfBall.onTile.getNormal().y), asin(golfBall.onTile.getNormal().z));
 			golfBall.gravityVec *= 180;
@@ -446,7 +321,7 @@ void GolfCourse::update() {
 			golfBall.gravityOn = true;
 		} else {
 			golfBall.gravityOn = false;
-		}
+		}*/
 	}
 
 	//Intersection Test for Ball and Cup
@@ -464,7 +339,7 @@ void GolfCourse::update() {
 		if (ballCupIntersect) {
 
 			//Check if the velocity of the ball is too fast
-			if (golfBall.velocity <= Vector3(0.1, 0.1, 0.1)) {
+			if (golfBall.velocity <= Vector3(0.001, 0.001, 0.001)) {
 				golfBall.velocity = Vector3();	//Stops the ball
 			}
 			else {

@@ -12,9 +12,8 @@
 
 class MovingCollider : public Rigidbody {
 	public:
-		bool willCollide = false;
-
 		Vector3 collisionNormal;
+		bool otherIsPhysical;
 		
 		vector<Collider*> possibleCollisions;
 
@@ -26,6 +25,7 @@ class MovingCollider : public Rigidbody {
 		void setCollisionObjects(vector<Collider*> colObjects);
 		void addCollisionObjects(Collider* colObject);
 		void addCollisionObjects(vector<Collider*> colObjects);
+		void onCollision();
 };
 
 class RigidSphere: public MovingCollider, public Sphere {
@@ -42,6 +42,7 @@ class RigidSphere: public MovingCollider, public Sphere {
 		void addForce(Force f);
 		void addForce(double dir, double spd);
 		void addForce(double dir, double vDir, double spd);
+		void onCollision();
 
 		void update();
 };

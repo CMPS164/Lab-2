@@ -48,10 +48,14 @@ struct Vertex {
 
 class Collider {
 	public:
+		bool isPhysical = true;
+		bool willCollide = false;
 		Position center;
 		Vector3 centerToVec(Position p);
 		virtual bool sphereCollide(Position p, double r);
 		virtual Vector3 getCollisionVector();
+		virtual void onCollision();
+		virtual void update();
 		virtual ~Collider() {};
 };
 
@@ -77,6 +81,7 @@ class Quad: public Collider {
 		void setVertices(vector <Vertex> verts);
 		void findCenter();
 		void setBounds();
+		void onCollision();
 		Vector3 getNormal();
 		int getToTileNum();
 };
@@ -91,6 +96,7 @@ class Sphere : public Collider {
 
 		virtual bool sphereCollide(Position p, double r);
 		virtual Vector3 getCollisionVector();
+		void onCollision();
 };
 
 #endif

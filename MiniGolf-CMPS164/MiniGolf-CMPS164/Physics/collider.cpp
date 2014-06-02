@@ -127,6 +127,16 @@ Vector3 Collider::getCollisionVector() {
 	return Vector3();
 }
 
+void Collider::onCollision() {
+}
+
+void Collider::update() {
+	if (willCollide) {
+		onCollision();
+		willCollide = false;
+	}
+}
+
 /****************Quad Functions*******************/
 
 // Construcors
@@ -189,6 +199,10 @@ bool Quad::sphereTileEdgeCollide(Position p) {
 	return true;
 }
 
+void Quad::onCollision() {
+
+}
+
 Vector3 Quad::getCollisionVector() {
 	return normal;
 }
@@ -243,6 +257,8 @@ Vector3 Quad::getNormal() {
 	return normal;
 }
 
+
+
 /*************Sphere Functions****************/
 
 Sphere::Sphere() : radius(1) {
@@ -277,4 +293,8 @@ bool Sphere::sphereCollide(Position p, double r) {
 
 Vector3 Sphere::getCollisionVector() {
 	return Vector3();
+}
+
+void Sphere::onCollision() {
+
 }

@@ -25,6 +25,10 @@ void MovingCollider::addCollisionObjects(vector<Collider*> colObjects) {
 	possibleCollisions.insert(possibleCollisions.end(), colObjects.begin(), colObjects.end());
 }
 
+void MovingCollider::onCollision() {
+
+}
+
 RigidSphere::RigidSphere() : MovingCollider(), Sphere(){
 	radius = 1;
 }
@@ -57,17 +61,18 @@ void RigidSphere::addForce(double dir, double vDir, double spd) {
 	velocity += Force(dir, vDir, spd).buildVector();
 }
 
+void RigidSphere::onCollision() {
+}
+
 void RigidSphere::update() {
 	if (willCollide) {
+		Collider::update();
 		//velocity();
-		velocity = velocity - (collisionNormal * 2 * velocity.dotProduct(collisionNormal));
+		if (isPhysical && otherIsPhysical) {
+			velocity = velocity - (collisionNormal * 2 * velocity.dotProduct(collisionNormal));
+		}
 		willCollide = false;
 	} else {
-		/*
-		if (gravityOn) {
-			velocity += (gravityVec / frameRate);
-		}
-		*/
 		if (velocity.moving()) {
 			position += Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate);
 			center = position;
@@ -95,6 +100,9 @@ void RigidSphere::update() {
 				if (collisionNormal.dotProduct(velocity) != 0) {	// If parallel to velocity, will not check
 					if (collides->sphereCollide(position + Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate), radius)) {
 						willCollide = true;
+						collides->willCollide = true;
+						otherIsPhysical = collides->isPhysical;
+						collides->update();
 						break;
 					}
 				}

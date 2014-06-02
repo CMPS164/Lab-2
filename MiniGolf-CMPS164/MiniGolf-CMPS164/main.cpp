@@ -61,37 +61,6 @@ void init() {
 }
 
 /*
-*	This calculates FACE NORMALS. One per tile
-*/
-/*
-void calc_Normal(array<double, 3> &result, Vertex v1, Vertex v2, Vertex v3) {
-	array<double, 3> vector_1;
-	vector_1[0] = v3.x - v2.x;
-	vector_1[1] = v3.y - v2.y;
-	vector_1[2] = v3.z - v2.z;
-
-	array<double, 3> vector_2;
-	vector_2[0] = v1.x - v2.x;
-	vector_2[1] = v1.y - v2.y;
-	vector_2[2] = v1.z - v2.z;
-
-	//Cross Product calculation
-	result[0] = (vector_1[1] * vector_2[2]) - (vector_1[2] * vector_2[1]);
-	result[1] = -1*((vector_1[0] * vector_2[2]) - (vector_1[2] * vector_2[0]));
-	result[2] = (vector_1[0] * vector_2[1]) - (vector_1[1] * vector_2[0]);
-
-	//Calculating Magnitude
-	float total = pow(result[0], 2) + pow(result[1], 2) + pow(result[2], 2);
-	float magnitude = sqrt(total);
-
-	//Getting Normalized
-	result[0] = result[0] / magnitude;
-	result[1] = result[1] / magnitude;
-	result[2] = result[2] / magnitude;
-}
-*/
-
-/*
 *	This function draws the golf course through primitives.
 *	In the future, we need to change this as fixed functional pipeline
 *	is deprecated in current openGL standards
@@ -353,14 +322,14 @@ int main(int argc, char** argv) {
 	cout << "'O' to focus on the Origin" << endl;
 	cout << "'C' to focus on the Cup" << endl;
 
-	
+	/*
 	for (auto tile : course->getTiles()) {
-		cout << "Tile # " << tile.tileNum << " and the number of Walls are " << tile.walls.size() << " and the number of border checks are " << tile.tileCheckWalls.size() << endl;
-		for (auto Wall : tile.tileCheckWalls) {
+		cout << "Tile # " << tile.tileNum << " and the number of Walls are " << tile.walls.size() << " and the number of border checks are " << tile.triggerWalls.size() << endl;
+		for (auto Wall : tile.triggerWalls) {
 			cout << "Tile to enter is numbered " << Wall.wallNum << endl;
-			cout << "V1 is <" << Wall.wallVert.at(0).x << " " << Wall.wallVert.at(0).y << " " << Wall.wallVert.at(0).z << "> and V2 is <" << Wall.wallVert.at(1).x << " " << Wall.wallVert.at(1).y << " " << Wall.wallVert.at(1).z << ">" << endl;
+			//cout << "V1 is <" << Wall.wallVert.at(0).x << " " << Wall.wallVert.at(0).y << " " << Wall.wallVert.at(0).z << "> and V2 is <" << Wall.wallVert.at(1).x << " " << Wall.wallVert.at(1).y << " " << Wall.wallVert.at(1).z << ">" << endl;
 		}
-	}
+	}*/
 	
 
 	//OpenGL Functions only begin if file reader succeeded
