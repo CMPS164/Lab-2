@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cmath>
 #include "GL/glew.h"
@@ -42,6 +43,8 @@ bool default_cam = true;
 bool third_person_cam = false;
 bool top_down_cam = false;
 
+double force, direction = 0;
+
 //Does some of the glut initializations
 void init() {
 	GLfloat light_Position_0[] = { 1.0f, 1.0f, 1.0f, 0.0f }; //Directional Light
@@ -58,6 +61,77 @@ void init() {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 
+}
+
+void userInputShots() {
+	
+	if (course->golfBall.velocity == (Vector3())) { //If the ball isn't moving
+		
+		cout << "//////////" << endl << "Shot #" << course->shotNum << endl;
+		while (true) {
+			cout << "Please Enter a Direction value from 0 to 360: " << endl;
+			string input;
+			getline(cin, input);
+			stringstream myInput(input);
+			if (myInput >> direction) {
+				cout << "Success " << direction << endl;
+				while (true) {
+					cout << "Please enter a Force value from 0.0 to 1.0" << endl;
+					getline(cin, input);
+					stringstream myInput(input);
+					if (myInput >> force) {
+						cout << "Success 2! " << force << endl;
+						course->putt(direction, force);
+						course->shotNum++;
+
+						break;
+					}
+					else {
+						cout << "Not a valid force value" << endl;
+					}
+				}
+				break;
+			}
+			else {
+				cout << "Not a valid direction value" << endl;
+			}
+		}
+	}
+
+}
+
+void drawGUIText(string s, int x, int y){
+	glDisable(GL_TEXTURE_2D);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(0.0, windowWidth, 0.0, windowHeight);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glRasterPos2i(x, y);
+	void * font = GLUT_BITMAP_9_BY_15;
+	for (string::iterator i = s.begin(); i != s.end(); ++i)
+	{
+		char c = *i;
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glutBitmapCharacter(font, c);
+	}
+	
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+	glEnable(GL_TEXTURE_2D);
+}
+
+void HUD() {
+	glColor3f(0, 0, 0);
+	drawGUIText("MiniGolf Game Engine", 10, windowHeight - 20); //Once Refactoring is done, get the current course number and place it here                                              
+	drawGUIText("Shot Number: " + to_string(course->shotNum), 10, windowHeight - 40); //Course has a shotNum property. Gets incremented per shot
+	drawGUIText("Inputted Direction: " + to_string(direction), 10, windowHeight - 60);
+	drawGUIText("Inputted Force: " + to_string(force), 10, windowHeight - 80);
+	drawGUIText("Course Number: 1", 10, windowHeight - 100);
 }
 
 /*
@@ -168,11 +242,14 @@ void GL_displayFunc() {
 	}
 
 	//Draws the Golf Course
+	HUD();
 	draw_Course(course);
 	course->update();
 
 	glFlush();
 	glutSwapBuffers();
+	
+	userInputShots();
 }
 
 void GL_reshapeFunc(int width, int height) {
@@ -294,7 +371,7 @@ int main(int argc, char** argv) {
 		//course->golfBall.position = Position(-.75, 0, 1);
 		//course->golfBall.position = Position(0.75, 0, 0.6);
 		
-		course->putt(Force (0, 1));
+		//course->putt(Force (0, 1));
 		//course->putt(Force(0, 1));
 		//course->putt(Force (46, .37));
 
@@ -346,7 +423,7 @@ int main(int argc, char** argv) {
 	
 	glutKeyboardFunc(GL_keyboardFunc);
 
-	glClearColor(0,0,0,0);
+	glClearColor(0,0,1,0);
 	glutMainLoop();
 	
 

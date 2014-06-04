@@ -85,6 +85,7 @@ class GolfCourse {
 		int getTeeTile();
 		int getCupTile();
 		int checkCurLoc();
+		int shotNum;
 		vector<Vertex> formRay(vector <Vertex> vertices); //Used for Ray Casting
 		bool intersectionTest(Vertex v1a, Vertex v1b, Vertex v2a, Vertex v2b);
 		void setBall();
