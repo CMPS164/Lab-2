@@ -75,6 +75,7 @@ class Ball: public RigidSphere {
 class GolfCourse {
 	public:
 		Ball golfBall;
+		int shotNum;
 
 		vector< vector<string> > file;
 		GolfCourse(vector< vector<string> > newFile);			// Constructor

@@ -52,12 +52,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\KHENTAI\Documents\CMPS164\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>lib\glew32.lib;lib\glew32s.lib;lib\freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="golfCourse.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="miniGolfGame.cpp" />
     <ClCompile Include="Physics\collider.cpp" />
     <ClCompile Include="Physics\force.cpp" />
     <ClCompile Include="Physics\movingCollider.cpp" />
@@ -96,10 +97,12 @@
     <ClCompile Include="Physics\position.cpp" />
     <ClCompile Include="Physics\vector3.cpp" />
     <ClCompile Include="Util\catcher.cpp" />
+    <ClCompile Include="Util\HUD.cpp" />
     <ClCompile Include="Util\reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="golfCourse.h" />
+    <ClInclude Include="miniGolfGame.h" />
     <ClInclude Include="Physics\collider.h" />
     <ClInclude Include="Physics\force.h" />
     <ClInclude Include="Physics\movingCollider.h" />
@@ -107,6 +110,7 @@
     <ClInclude Include="Physics\position.h" />
     <ClInclude Include="Physics\vector3.h" />
     <ClInclude Include="Util\catcher.h" />
+    <ClInclude Include="Util\HUD.h" />
     <ClInclude Include="Util\reader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
