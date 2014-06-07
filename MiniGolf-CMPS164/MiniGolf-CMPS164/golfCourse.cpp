@@ -147,7 +147,11 @@ GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	decipherFile();
 	setBall();
 	newTileNum = getTeeTile();
+<<<<<<< HEAD
 	shotNum = 1; //Starting Shot
+=======
+	shotNum = 0; 
+>>>>>>> e686ba5a3fddee720ad8009f905c0a072565bb91
 }
 
 //Accessors for tiles Vector, Tee and Cup Locations
