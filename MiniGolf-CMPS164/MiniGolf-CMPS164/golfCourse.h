@@ -75,6 +75,7 @@ class Ball: public RigidSphere {
 class GolfCourse {
 	public:
 		Ball golfBall;
+		int shotNum;
 
 		vector< vector<string> > file;
 		GolfCourse(vector< vector<string> > newFile);			// Constructor
@@ -85,6 +86,7 @@ class GolfCourse {
 		int getTeeTile();
 		int getCupTile();
 		int checkCurLoc();
+		
 		vector<Vertex> formRay(vector <Vertex> vertices); //Used for Ray Casting
 		bool intersectionTest(Vertex v1a, Vertex v1b, Vertex v2a, Vertex v2b);
 		void setBall();
