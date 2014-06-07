@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 #ifndef MINIGOLFGAME_H
 #define MINIGOLFGAME_H
 
+=======
+>>>>>>> 744727c3b4c908a05c34202b48adb3f013a38d95
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -37,5 +40,8 @@ void userInput(GolfCourse *course);
 void keyFunctions(unsigned char key, GolfCourse *course);
 
 GolfCourse* readCourseFile(int argc, char** argv);
+<<<<<<< HEAD
 
 #endif
+=======
+>>>>>>> 744727c3b4c908a05c34202b48adb3f013a38d95

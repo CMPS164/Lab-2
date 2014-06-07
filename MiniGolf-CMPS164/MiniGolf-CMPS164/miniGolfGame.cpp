@@ -43,7 +43,11 @@ void setCameraModes(GolfCourse *course) {
 }
 
 void HUDCalls(HUD* HUDArg) {
+<<<<<<< HEAD
 
+=======
+	glColor3f(0, 0, 0);
+>>>>>>> 744727c3b4c908a05c34202b48adb3f013a38d95
 	HUDArg->drawGUIText("MiniGolf Game Engine", 10, windowHeight - 20); //Once Refactoring is done, get the current course number and place it here                                              
 	HUDArg->drawGUIText("Shot Number: " + to_string(HUDArg->returnCourse()->shotNum), 10, windowHeight - 40); //Course has a shotNum property. Gets incremented per shot
 	HUDArg->drawGUIText("Inputted Direction: " + to_string(direction), 10, windowHeight - 60);
@@ -84,6 +88,10 @@ void draw_Course(GolfCourse *course) {
 			glPushMatrix();
 			glBegin(GL_POLYGON);
 			glColor3f(1.0f, 0.0f, 0.0f); //Red
+<<<<<<< HEAD
+=======
+			//glNormal3f(1.0f, 1.0f, 1.0f); //Possibly need to change normal calculation for better lighting?
+>>>>>>> 744727c3b4c908a05c34202b48adb3f013a38d95
 			glNormal3f(wall.getNormal().x, wall.getNormal().y, wall.getNormal().z);
 			glVertex3f(wall.wallVert[0].x, wall.wallVert[0].y, wall.wallVert[0].z);
 			glVertex3f(wall.wallVert[1].x, wall.wallVert[1].y, wall.wallVert[1].z);
@@ -271,6 +279,17 @@ GolfCourse* readCourseFile(int argc, char** argv) {
 
 		course = new GolfCourse(file);
 	
+<<<<<<< HEAD
+=======
+		//course->golfBall.position = Position(-.75, 0, 1);
+		//course->golfBall.position = Position(0.75, 0, 0.6);
+
+		//course->putt(Force (0, 0.1));
+		//course->putt(Force(0, 1));
+		//course->putt(Force (46, .37));
+
+		//These parameters define gluLookAt for third person view. This is dependant on the ball's changing position.
+>>>>>>> 744727c3b4c908a05c34202b48adb3f013a38d95
 		third_person_ball = { course->getTee().x, course->getTee().y + 0.4, course->getTee().z + 0.3,
 			course->getTee().x, course->getTee().y, course->getTee().z };
 	}
