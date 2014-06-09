@@ -76,20 +76,26 @@ void RigidSphere::update() {
 		if (velocity.moving()) {
 			position += Position(velocity.x / frameRate, velocity.y / frameRate, velocity.z / frameRate);
 			center = position;
-		}
-		if (grounded) {
-			// Simulate rolling friction for now
-			velocity -= (velocity / 8)/frameRate;
+			if (grounded) {
+				// Simulate rolling friction for now
+				float totalVel = velocity.absolute().x + velocity.absolute().y + velocity.absolute().z;
+				
+				velocity.x -= (velocity.x / totalVel) * (0.1 / frameRate);
+				velocity.y -= (velocity.y / totalVel) * (0.1 / frameRate);
+				velocity.z -= (velocity.z / totalVel) * (0.1 / frameRate);
+				
+				// velocity -= (velocity / 8)/frameRate;
 
-			//velocity -= (velocity.singedValues() * (0.01 / frameRate));
-			if (velocity.absolute().x <= (.1 / frameRate)) {
-				velocity.x = 0;
-			}
-			if (velocity.absolute().y <= (.1 / frameRate)) {
-				velocity.y = 0;
-			}
-			if (velocity.absolute().z <= (.1 / frameRate)) {
-				velocity.z = 0;
+				//velocity -= (velocity.singedValues() * (0.01 / frameRate));
+				if (velocity.absolute().x <= (.1 / frameRate)) {
+					velocity.x = 0;
+				}
+				if (velocity.absolute().y <= (.1 / frameRate)) {
+					velocity.y = 0;
+				}
+				if (velocity.absolute().z <= (.1 / frameRate)) {
+					velocity.z = 0;
+				}
 			}
 		}
 		

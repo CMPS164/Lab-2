@@ -38,9 +38,15 @@ void Rigidbody::update() {
 	}
 	if (grounded) {
 		// Simulate rolling friction for now
-		velocity -= (velocity / 8) / frameRate;
+		//velocity -= (velocity / 8) / frameRate;
+		float totalVel = velocity.absolute().x + velocity.absolute().y + velocity.absolute().z;
 
-		//velocity -= (velocity.singedValues() * (0.01 / frameRate));
+		velocity.x -= (velocity.x / totalVel) * (0.1 / frameRate);
+		velocity.y -= (velocity.y / totalVel) * (0.1 / frameRate);
+		velocity.z -= (velocity.z / totalVel) * (0.1 / frameRate);
+		// velocity -= velocity.singedValues() * 0.01 / frameRate;
+
+		// if too slow stop motion
 		if (velocity.absolute().x <= (.01 / frameRate)) {
 			velocity.x = 0;
 		}

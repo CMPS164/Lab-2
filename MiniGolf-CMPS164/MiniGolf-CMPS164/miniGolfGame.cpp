@@ -122,7 +122,7 @@ void draw_Course(GolfCourse *course) {
 }
 
 void userInput(GolfCourse *course) {
-	if (course->golfBall.velocity == (Vector3())) { //If the ball isn't moving
+	if (course->golfBall.velocity == 0) { //If the ball isn't moving
 
 		cout << "//////////" << endl << "Shot #" << course->shotNum << endl;
 		while (true) {

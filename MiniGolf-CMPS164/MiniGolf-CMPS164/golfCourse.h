@@ -31,6 +31,7 @@ struct Wall : public Quad {
 	Wall(Vertex v1, Vertex v2, float wHeight, int wNum);
 };
 
+/*
 struct TriggerWall : public Quad {
 	int wallNum;
 	float wallHeight;
@@ -38,7 +39,7 @@ struct TriggerWall : public Quad {
 	TriggerWall(Vertex v1, Vertex v2, float wHeight, int wNum);
 	void onCollision();
 	void update();
-};
+};*/
 
 // Holds tile information
 struct Tile : public Quad {
@@ -50,7 +51,7 @@ struct Tile : public Quad {
 	// IE: neighbor at element 0 corresponds to
 	//     vertices at element 0 and 1
 	vector<Wall> walls;
-	vector<TriggerWall> triggerWalls;
+	// vector<TriggerWall> triggerWalls;
 	Tile();
 	Tile(vector<string> data, int lNum);
 };
@@ -91,7 +92,7 @@ class GolfCourse {
 		void setBall();
 		void setBallTile(int num);
 		vector<Collider*> wallsToCollider(vector<Wall> wal);
-		vector<Collider*> triggerWallsToCollider(vector<TriggerWall> wal);
+		// vector<Collider*> triggerWallsToCollider(vector<TriggerWall> wal);
 		void putt(Force f);
 		void putt(double dir, double spd);
 
