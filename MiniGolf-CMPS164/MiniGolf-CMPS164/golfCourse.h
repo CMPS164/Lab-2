@@ -77,6 +77,7 @@ class GolfCourse {
 	public:
 		Ball golfBall;
 		int shotNum;
+		int totalShotNum;
 
 		vector< vector<string> > file;
 		GolfCourse(vector< vector<string> > newFile);			// Constructor
@@ -95,8 +96,7 @@ class GolfCourse {
 		// vector<Collider*> triggerWallsToCollider(vector<TriggerWall> wal);
 		void putt(Force f);
 		void putt(double dir, double spd);
-
-		
+		bool endCourse;
 
 		void update();
 	private:

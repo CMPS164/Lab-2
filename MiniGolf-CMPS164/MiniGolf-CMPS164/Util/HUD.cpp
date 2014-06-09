@@ -24,7 +24,7 @@ void HUD::drawGUIText(string s, int x, int y) {
 	for (string::iterator i = s.begin(); i != s.end(); ++i)
 	{
 		char c = *i;
-		glColor3f(1.0f, 1.0f, 1.0f);
+		glColor3f(0.0f, 0.0f, 0.0f);
 		glutBitmapCharacter(font, c);
 	}
 

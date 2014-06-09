@@ -150,6 +150,8 @@ GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	setBall();
 	newTileNum = getTeeTile();
 	shotNum = 0; 
+	totalShotNum = shotNum;
+	endCourse = false;
 
 }
 
@@ -329,8 +331,10 @@ void GolfCourse::update() {
 		if (ballCupIntersect) {
 
 			//Check if the velocity of the ball is too fast
-			if (golfBall.velocity <= Vector3(0.001, 0.001, 0.001)) {
+			if (golfBall.velocity.absolute() <= Vector3(0.1, 0.1, 0.1)) {
 				golfBall.velocity = 0;	//Stops the ball
+				totalShotNum = shotNum;
+				endCourse = true;
 			}
 			else {
 				//Change the ball's direction and use its current velocity to create the "lip out" effect

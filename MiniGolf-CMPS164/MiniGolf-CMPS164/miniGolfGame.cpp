@@ -43,12 +43,13 @@ void setCameraModes(GolfCourse *course) {
 }
 
 void HUDCalls(HUD* HUDArg) {
-
+	glColor3f(0.0f, 0.0f, 0.0f);
 	HUDArg->drawGUIText("MiniGolf Game Engine", 10, windowHeight - 20); //Once Refactoring is done, get the current course number and place it here                                              
 	HUDArg->drawGUIText("Shot Number: " + to_string(HUDArg->returnCourse()->shotNum), 10, windowHeight - 40); //Course has a shotNum property. Gets incremented per shot
 	HUDArg->drawGUIText("Inputted Direction: " + to_string(direction), 10, windowHeight - 60);
 	HUDArg->drawGUIText("Inputted Force: " + to_string(force), 10, windowHeight - 80);
 	HUDArg->drawGUIText("Course Number: 1", 10, windowHeight - 100);
+	HUDArg->drawGUIText("TotalNumShots: " + to_string(HUDArg->returnCourse()->totalShotNum), windowWidth - 150, windowHeight - 20);
 }
 
 /*
@@ -122,35 +123,37 @@ void draw_Course(GolfCourse *course) {
 }
 
 void userInput(GolfCourse *course) {
-	if (course->golfBall.velocity == 0) { //If the ball isn't moving
+	if (!course->endCourse) {
+		if (course->golfBall.velocity == 0) { //If the ball isn't moving
 
-		cout << "//////////" << endl << "Shot #" << course->shotNum << endl;
-		while (true) {
-			cout << "Please Enter a Direction value from 0 to 360: " << endl;
-			string input;
-			getline(cin, input);
-			stringstream myInput(input);
-			if (myInput >> direction) {
-				cout << "Success " << direction << endl;
-				while (true) {
-					cout << "Please enter a Force value from 0.0 to 1.0" << endl;
-					getline(cin, input);
-					stringstream myInput(input);
-					if (myInput >> force) {
-						cout << "Success 2! " << force << endl;
-						course->putt(direction, force);
-						course->shotNum++;
+			cout << "//////////" << endl << "Shot #" << course->shotNum + 1 << endl;
+			while (true) {
+				cout << "Please Enter a Direction value from 0 to 360: " << endl;
+				string input;
+				getline(cin, input);
+				stringstream myInput(input);
+				if (myInput >> direction) {
+					cout << "Success " << direction << endl;
+					while (true) {
+						cout << "Please enter a Force value from 0.0 to 1.0" << endl;
+						getline(cin, input);
+						stringstream myInput(input);
+						if (myInput >> force) {
+							cout << "Success 2! " << force << endl;
+							course->putt(direction, force);
+							course->shotNum++;
 
-						break;
+							break;
+						}
+						else {
+							cout << "Not a valid force value" << endl;
+						}
 					}
-					else {
-						cout << "Not a valid force value" << endl;
-					}
+					break;
 				}
-				break;
-			}
-			else {
-				cout << "Not a valid direction value" << endl;
+				else {
+					cout << "Not a valid direction value" << endl;
+				}
 			}
 		}
 	}

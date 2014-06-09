@@ -1,26 +1,26 @@
-﻿Build started 6/8/2014 5:11:58 PM.
-     1>Project "C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" on node 2 (Build target(s)).
+﻿Build started 6/8/2014 11:10:18 PM.
+     1>Project "C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include" /I"C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt golfCourse.cpp
          golfCourse.cpp
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(66): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(79): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(180): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(347): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(364): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(417): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(450): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(451): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(452): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(457): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(458): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(466): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(467): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(468): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(470): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\francis\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(471): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(66): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(79): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(182): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(351): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(368): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(421): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(454): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(455): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(456): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(461): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(462): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(470): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(471): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(472): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(474): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\khentai\documents\github\lab-2\minigolf-cmps164\minigolf-cmps164\golfcourse.cpp(475): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Francis\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\lib" lib\glew32.lib lib\glew32s.lib lib\freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Francis\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Francis\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.lib" /MACHINE:X86 Debug\golfCourse.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\lib" lib\glew32.lib lib\glew32s.lib lib\freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.lib" /MACHINE:X86 Debug\golfCourse.obj
          Debug\main.obj
          Debug\miniGolfGame.obj
          Debug\collider.obj
@@ -32,9 +32,9 @@
          Debug\catcher.obj
          Debug\HUD.obj
          Debug\reader.obj
-         MiniGolf-CMPS164.vcxproj -> C:\Users\Francis\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.exe
-     1>Done Building Project "C:\Users\Francis\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" (Build target(s)).
+         MiniGolf-CMPS164.vcxproj -> C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\Debug\MiniGolf-CMPS164.exe
+     1>Done Building Project "C:\Users\KHENTAI\Documents\GitHub\Lab-2\MiniGolf-CMPS164\MiniGolf-CMPS164\MiniGolf-CMPS164.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.95
+Time Elapsed 00:00:01.13
