@@ -9,9 +9,13 @@
 using namespace std;
 int windowWidth2 = 800;
 int windowHeight2 = 600;
+int currentCourseNum = 0;
 
+vector<GolfCourse*> courses;
 GolfCourse* course;
+playerProfile* player;
 HUD* golfHUD;
+HUD* resultsScreen;
 
 //Does some of the glut initializations
 void init() {
@@ -45,18 +49,40 @@ void GL_displayFunc() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	setCameraModes(course);
+	if (currentCourseNum < courses.size()) {
+		if (courses[currentCourseNum]->endCourse) {
+			currentCourseNum++;
+			if (currentCourseNum >= courses.size()) {
+				//End the Game
+				//Shows the results screen.
+				resultsScreen->updatePlayer(player);
+				HUDResults(resultsScreen);
+				glutLeaveMainLoop();
+			}
+			else {
+				player->updateScores(currentCourseNum, courses[currentCourseNum]->totalShotNum);
+				golfHUD->changeCourse(courses[currentCourseNum]);
+			}
+		}
+		else {
+			
+			
+			setCameraModes(courses[currentCourseNum]);
 
-	//Draws the Golf Course
-	HUDCalls(golfHUD);
+			//Draws the Golf Course
+			HUDCalls(golfHUD);
 
-	draw_Course(course);
-	
-	course->update();
+			draw_Course(courses[currentCourseNum]);
+
+			courses[currentCourseNum]->update();
+			
+		}
+		
+	}
 	glFlush();
 	glutSwapBuffers();
 
-	userInput(course);
+	userInput(courses[currentCourseNum]);
 }
 
 
@@ -75,7 +101,7 @@ void GL_reshapeFunc(int width, int height) {
 *	Interactivity for the engine.
 */
 void GL_keyboardFunc(unsigned char key, int x, int y) {
-	keyFunctions(key, course);
+	keyFunctions(key, courses[currentCourseNum]);
 }
 
 void GL_idleFunc() {
@@ -84,9 +110,23 @@ void GL_idleFunc() {
 
 int main(int argc, char** argv) {
 	int exitNum = 0;
+	string name;
 
-	course = readCourseFile(argc, argv);
-	golfHUD = new HUD(course);
+	//Create a Player Profile
+	//There is an issue with cin where entering a name here, or entering anywhere else will cause the cin buffer to remain
+	//causing unintended "bugs" with the input. Doesn't break the game though
+	cout << "Enter a Player Name for a Profile" << endl;
+	cin >> name;
+	
+	player = new playerProfile(name);
+
+	courses = readCourseFile2(argc, argv);
+
+	golfHUD = new HUD(courses[currentCourseNum]);
+	resultsScreen = new HUD(player);
+
+	//course = readCourseFile(argc, argv);
+	//golfHUD = new HUD(course);
 		
 	//OpenGL Functions only begin if file reader succeeded
 	glutInit(&argc, argv);

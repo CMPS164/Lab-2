@@ -137,7 +137,7 @@ void TriggerWall::update() {
 	Quad::update();
 }
 */
-
+/*
 // Constructor
 GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	file = newFile;
@@ -154,7 +154,25 @@ GolfCourse::GolfCourse(vector< vector<string> > newFile) {
 	endCourse = false;
 
 }
+*/
+// Constructor
+GolfCourse::GolfCourse(vector< vector<string> > newFile) {
+	file = newFile;
 
+	// Used for checking later
+	teeTile = -1;
+	cupTile = -1;
+
+	decipherFile2();
+	setBall();
+	newTileNum = getTeeTile();
+	shotNum = 0;
+	parValue; //changes per golfCourse
+	totalShotNum = shotNum;
+	courseName == "";
+	endCourse = false;
+
+}
 //Accessors for tiles Vector, Tee and Cup Locations
 vector<Tile> GolfCourse::getTiles() {
 	return tiles;
@@ -279,6 +297,64 @@ void GolfCourse::decipherFile() {
 
 	inputTiles(pTiles, lineNum);
 }
+
+void GolfCourse::decipherFile2() {
+	vector< vector<string> > pTiles;	// Stores that vectors that might be tiles
+	vector<int> lineNum;
+
+	// Goes through the vectors looking for tee and cup
+	// If error is found, print whats wrong and exits out
+	// Correct and non tee/cup lines will be inserted into another vector
+	for (unsigned int x = 0; x < file.size(); ++x) {
+		if (file[x].size() < 1) {
+			throw string("not enough information on line " + to_string(x) + ".");
+		} else if (file[x][0].compare("name") == 0) {
+			stringstream tempStr;
+			for (int tempI = 1; tempI < file[x].size(); tempI++) {
+				tempStr << file[x][tempI] << " ";
+			}
+			courseName = tempStr.str();
+		} else if (file[x].size() == 2) {
+			if (file[x][0].compare("par") == 0) {
+				istringstream(file[x][1]) >> parValue;
+				
+			}
+			
+		} else if (file[x].size() == 5) {
+			if (file[x][0].compare("tee") == 0) {
+				if (teeTile != -1) throw string("another 'tee' data found at line " + to_string(x) +
+					", current engine does not support more than 1.");
+				teeLine = x;
+				istringstream(file[x][1]) >> teeTile;
+				istringstream(file[x][2]) >> tee.x;
+				istringstream(file[x][3]) >> tee.y;
+				istringstream(file[x][4]) >> tee.z;
+			}
+			else if (file[x][0].compare("cup") == 0) {
+				if (cupTile != -1) throw string("another 'cup' data found at line " + to_string(x) +
+					", current engine does not support more than 1.");
+				cupLine = x;
+				istringstream(file[x][1]) >> cupTile;
+				istringstream(file[x][2]) >> cup.x;
+				istringstream(file[x][3]) >> cup.y;
+				istringstream(file[x][4]) >> cup.z;
+			}
+			else {
+				throw string("data at line " + to_string(x) + " has an incorrect tag.");
+			}
+		}
+		else {
+			pTiles.push_back(file[x]);
+			lineNum.push_back(x);
+		}
+	}
+
+	if (teeTile == -1) mitt.cont("No tee data found, would you like to continue? (y/n)", "tee data is missing.");
+	if (cupTile == -1) mitt.cont("No cup data found, would you like to continue? (y/n)", "cup data is missing.");
+
+	inputTiles(pTiles, lineNum);
+}
+
 
 // Goes through remaining file storing the tile data that are correct
 // Throws if input is incorrect

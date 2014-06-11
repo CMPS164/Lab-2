@@ -78,6 +78,8 @@ class GolfCourse {
 		Ball golfBall;
 		int shotNum;
 		int totalShotNum;
+		int parValue;
+		string courseName;
 
 		vector< vector<string> > file;
 		GolfCourse(vector< vector<string> > newFile);			// Constructor
@@ -119,6 +121,7 @@ class GolfCourse {
 		vector<Tile> tiles;
 
 		void decipherFile();	// Goes through file looking for tee and cup
+		void decipherFile2();
 		void inputTiles(vector< vector<string> > &pTiles, vector<int> &lineNum);		// Goes through reamaining file storing the tile data
 		void setNorms(vector<Tile> &tiles);
 		void printCourse();		// Prints out the course in its entirety

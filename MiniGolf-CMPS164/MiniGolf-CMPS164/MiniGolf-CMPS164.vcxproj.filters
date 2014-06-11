@@ -95,6 +95,12 @@
     <ClCompile Include="Util\HUD.cpp">
       <Filter>Source Files\Engine\Util</Filter>
     </ClCompile>
+    <ClCompile Include="Util\playerProfile.cpp">
+      <Filter>Source Files\Engine\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\courseInfo.cpp">
+      <Filter>Source Files\Engine\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="golfCourse.h">
@@ -128,6 +134,12 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Util\HUD.h">
+      <Filter>Header Files\Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\playerProfile.h">
+      <Filter>Header Files\Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\courseInfo.h">
       <Filter>Header Files\Engine\Util</Filter>
     </ClInclude>
   </ItemGroup>

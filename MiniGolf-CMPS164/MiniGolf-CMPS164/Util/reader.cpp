@@ -70,3 +70,62 @@ vector< vector<string> > reader::getWords() {
 
 	return temp;
 }
+
+
+vector< vector< vector<string > > > reader::parseFile() {
+	vector<string> lines = getLines();
+	vector<string> p_CourseLines;
+	vector< vector< vector<string> > > returnList;
+
+	for (int i = 1; i < lines.size(); i++) {
+		string lineContent = lines.at(i);
+		if (lineContent.compare("begin_hole") == 0) {
+		
+			//cout << "Begin_Hole string" << endl;
+			p_CourseLines.clear();
+			continue;
+		}
+		else if (lineContent.compare("end_hole") == 0) {
+			//cout << "End_Hole string" << endl;
+			//end the course reading and send the lines vector to getWords2
+			//clears the vector p_CourseLines to continue reading
+			//toCourses.push_back(getWords2(p_CourseLines));
+			returnList.push_back(getWords2(p_CourseLines));
+			//p_CourseLines.clear();
+		
+			continue;
+		}
+		
+			p_CourseLines.push_back(lineContent);
+		
+	}
+	return returnList;
+}
+
+vector< vector<string> > reader::getWords2(vector <string> lines) {
+	
+	vector<string> tokens;					// Variable to hold the words in a line
+	vector< vector<string> > temp;			// Variable to hold values that will be returned
+
+	stringstream ss;
+	string buf;
+
+	// Goes through each line, seperating the words
+	// and stores them into a vector
+	// vector is then pushed onto a vector
+	for (auto &line : lines) {
+		ss << line;
+
+		while (ss >> buf) {
+			tokens.push_back(buf);
+		
+		}
+
+		// Pushes vector onto the vector and clears our variables, to be used again
+		temp.push_back(tokens);
+		tokens.clear();
+		ss.clear();
+	}
+
+	return temp;
+}

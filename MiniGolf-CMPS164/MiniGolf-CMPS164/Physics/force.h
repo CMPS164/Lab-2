@@ -26,7 +26,7 @@ class Force {
 		// Sets x and z direction, checks value to be between 0 and 360 inclusive
 		// 0 will be forward or the -z direction and 90 will be +x direction
 		void setDirection(double dir);
-
+		void setSpeed(double spd);
 		// Sets y direction, checks value to be between -90 and 90
 		// -90 will be -y(Down), 0 no vertical movement, 90 +y (Up)
 		void setVDirection(double vDir);

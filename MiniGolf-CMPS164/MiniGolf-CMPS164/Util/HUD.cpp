@@ -6,8 +6,24 @@ HUD::HUD(GolfCourse *course) {
 	thisCourse = course;
 }
 
+HUD::HUD(playerProfile* player) {
+	thisPlayer = player;
+}
+
 GolfCourse* HUD::returnCourse() {
 	return thisCourse;
+}
+
+void HUD::updatePlayer(playerProfile* player) {
+	thisPlayer = player;
+}
+
+void HUD::changeCourse(GolfCourse* c) {
+	thisCourse = c;
+}
+
+playerProfile* HUD::returnPlayer() {
+	return thisPlayer;
 }
 
 void HUD::drawGUIText(string s, int x, int y) {

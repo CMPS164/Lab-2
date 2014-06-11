@@ -1,7 +1,9 @@
 #include "miniGolfGame.h"
+#include "Util/playerProfile.h"
 
 int windowWidth = 800;
 int windowHeight = 600;
+
 
 cam_coord default{0, 3, 3, 0, 0, 0};
 cam_coord third_person_ball{ 0, 0, 0, 0, 0, 0 };
@@ -17,7 +19,7 @@ double direction, force = 0;
 
 void setCameraModes(GolfCourse *course) {
 	
-	third_person_ball = { course->golfBall.position.x, course->golfBall.position.y + 0.2, course->golfBall.position.z + 0.3,
+	third_person_ball = { course->golfBall.position.x, course->golfBall.position.y + 0.3, course->golfBall.position.z + 0.3,
 		course->golfBall.position.x, course->golfBall.position.y, course->golfBall.position.z };
 
 	if (third_person_cam) {
@@ -44,12 +46,22 @@ void setCameraModes(GolfCourse *course) {
 
 void HUDCalls(HUD* HUDArg) {
 	glColor3f(0.0f, 0.0f, 0.0f);
-	HUDArg->drawGUIText("MiniGolf Game Engine", 10, windowHeight - 20); //Once Refactoring is done, get the current course number and place it here                                              
-	HUDArg->drawGUIText("Shot Number: " + to_string(HUDArg->returnCourse()->shotNum), 10, windowHeight - 40); //Course has a shotNum property. Gets incremented per shot
-	HUDArg->drawGUIText("Inputted Direction: " + to_string(direction), 10, windowHeight - 60);
-	HUDArg->drawGUIText("Inputted Force: " + to_string(force), 10, windowHeight - 80);
-	HUDArg->drawGUIText("Course Number: 1", 10, windowHeight - 100);
+	HUDArg->drawGUIText("Name: " + HUDArg->returnCourse()->courseName, 10, windowHeight - 20); //Once Refactoring is done, get the current course number and place it here                                              
+	HUDArg->drawGUIText("Shot Number: " + to_string(HUDArg->returnCourse()->shotNum), 10, windowHeight - 40); 
+	HUDArg->drawGUIText("Par: " + to_string(HUDArg->returnCourse()->parValue), 10, windowHeight - 60);//Course has a shotNum property. Gets incremented per shot
+	HUDArg->drawGUIText("Inputted Direction: " + to_string(direction), 10, windowHeight - 80);
+	HUDArg->drawGUIText("Inputted Force: " + to_string(force), 10, windowHeight - 100);
 	HUDArg->drawGUIText("TotalNumShots: " + to_string(HUDArg->returnCourse()->totalShotNum), windowWidth - 150, windowHeight - 20);
+
+}
+
+void HUDResults(HUD* HUDArg) {
+	glColor3f(0.0f, 0.0f, 0.0f);
+	int tempHeight = 10;
+	for (int index = 0; index < HUDArg->returnPlayer()->returnScores().size(); index++) {
+		HUDArg->drawGUIText("Course: " + HUDArg->returnPlayer()->returnScores()[index]->getName() + " Score: " + to_string(HUDArg->returnPlayer()->returnScores()[index]->getShotNum()) + " Par: " + to_string(HUDArg->returnPlayer()->returnScores()[index]->getParValue()), 10, windowHeight - tempHeight);
+		tempHeight += 10;
+	}
 }
 
 /*
@@ -145,14 +157,8 @@ void userInput(GolfCourse *course) {
 
 							break;
 						}
-						else {
-							cout << "Not a valid force value" << endl;
-						}
 					}
 					break;
-				}
-				else {
-					cout << "Not a valid direction value" << endl;
 				}
 			}
 		}
@@ -225,6 +231,13 @@ void keyFunctions(unsigned char key, GolfCourse *course) {
 		default.zLoc = 3;
 
 		break;
+	case 'f':
+		//Stop the ball and add one extra stroke to the total num
+		//The Extra Part to the final project; too lazy and uninterested in making pool
+		course->golfBall.velocity = Vector3(0, 0, 0);
+		course->totalShotNum += 1;
+
+		break;
 	case 'b':
 
 		default_cam = true;
@@ -249,6 +262,40 @@ void keyFunctions(unsigned char key, GolfCourse *course) {
 	}
 }
 
+string readCourseName(int argc, char** argv) {
+
+	string fileName;
+	string courseName;
+
+	vector< vector<string> > file;	// Our file, as a vector
+
+	Catcher mitt;			// catcher object
+	try {
+		// Checks file entered, asks for input if a single file is not supplied
+		if (argc != 2) {
+			// Requests for an input
+			fileName = mitt.reEnter("We expected one file, would you like to enter a file? (y/n)",
+				"Enter file location: ", "no file location was entered.");
+		}
+		else {
+			fileName = argv[1];
+		}
+
+		reader fileReader(fileName);		// reader object
+
+		file = fileReader.getWords();		// Gets a vector of a vector of each word
+
+		courseName = file.at(0).at(1);
+	}
+	catch (string error) {
+		// Reports error and changes the exit value
+		cout << "Program exited because ";
+		cout << error << endl;
+		exit(EXIT_FAILURE);
+	}
+	return courseName;
+}
+
 GolfCourse* readCourseFile(int argc, char** argv) {
 
 	string fileName;
@@ -271,6 +318,7 @@ GolfCourse* readCourseFile(int argc, char** argv) {
 		}
 
 		reader fileReader(fileName);		// reader object
+
 		file = fileReader.getWords();		// Gets a vector of a vector of each word
 
 		course = new GolfCourse(file);
@@ -303,4 +351,65 @@ GolfCourse* readCourseFile(int argc, char** argv) {
 	cout << endl << "//////////" << endl;
 
 	return course;
+}
+
+vector<GolfCourse*> readCourseFile2(int argc, char** argv) {
+	vector<GolfCourse*> listCourses;
+	vector< vector< vector<string > > > pCourses;
+	string fileName;
+
+	vector< vector<string> > file;	// Our file, as a vector
+
+	Catcher mitt;			// catcher object
+
+	// Try block, used to catch problems in what we do
+	try {
+		// Checks file entered, asks for input if a single file is not supplied
+		if (argc != 2) {
+			// Requests for an input
+			fileName = mitt.reEnter("We expected one file, would you like to enter a file? (y/n)",
+				"Enter file location: ", "no file location was entered.");
+		}
+		else {
+			fileName = argv[1];
+		}
+
+		reader fileReader(fileName);		// reader object
+		pCourses = fileReader.parseFile();
+		
+		for (auto &course_element : pCourses) {
+			listCourses.push_back(new GolfCourse(course_element));
+		}
+
+		third_person_ball = { listCourses.at(0)->getTee().x, listCourses.at(0)->getTee().y + 0.4, listCourses.at(0)->getTee().z + 0.3,
+			listCourses.at(0)->getTee().x, listCourses.at(0)->getTee().y, listCourses.at(0)->getTee().z };
+	}
+	catch (string error) {
+		// Reports error and changes the exit value
+		cout << "Program exited because ";
+		cout << error << endl;
+		system("pause");
+		exit(EXIT_FAILURE);
+	}
+
+	
+	cout << "CMPS164 Game Engines Lab 2 by Francis Tang and Kenneth Thieu" << endl;
+	cout << "The perspective of the camera is locked at 90 Degrees Field of View" << endl << "with a near clip of 0.1 and a far clip of 100" << endl;
+	cout << "It also operates with the depth in the negative Z-axis" << endl;
+	cout << "However, the camera configurations may be altered with the following controls: " << endl;
+	cout << "'A' or 'D' keys to move the camera position in the negative/positive x-axis respectively" << endl;
+	cout << "'W' or 'S' keys to move the camera position in the positive/negative x-axis respectively" << endl;
+	cout << "'Q' or 'E' keys to move the camera position in the positive/negative x-axis respectively" << endl;
+	cout << "'R' to reset the camera positions to default" << endl;
+	cout << "To have the camera focus on either the origin, tee, or cup, we have the following controls: " << endl;
+	cout << "'T' to focus on the Tee" << endl;
+	cout << "'O' to focus on the Origin" << endl;
+	cout << "'C' to focus on the Cup" << endl;
+	cout << "'B' DefaultCam" << endl;
+	cout << "'N' ThirdPersonCam" << endl;
+	cout << "'M' TopDownCam" << endl;
+	cout << endl << "//////////" << endl;
+	
+
+	return listCourses;
 }

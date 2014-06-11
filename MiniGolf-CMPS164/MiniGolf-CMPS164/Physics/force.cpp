@@ -13,6 +13,7 @@ Force::Force() : direction(0), vertDirection(0), speed(0) {}
 
 Force::Force(double dir, double spd) : vertDirection(0), speed(spd) {
 	setDirection(dir);
+	setSpeed(spd);
 }
 
 Force::Force(double dir, double vDir, double spd) : direction(dir), vertDirection(vDir), speed(spd) {
@@ -29,6 +30,16 @@ void Force::setDirection(double dir) {
 	}
 	direction = dir;
 }
+
+
+void Force::setSpeed(double spd) {
+	while (spd < 0 || spd > 1.0) {
+		spd = mitt.reEnterNum("Speed Input must be between 0 and 1, would you like to input a new speed value? (y/n)",
+			"Enter new Speed Value (0 - 1): ", "direction angle was not between 0 - 360");
+	}
+	speed = spd;
+}
+
 
 // Sets y direction, checks value to be between -90 and 90
 // -90 will be -y(Down), 0 no vertical movement, 90 +y (Up)
